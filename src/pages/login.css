@@ -1,0 +1,120 @@
+/* Full background enclosure */
+.login-bg {
+  background-image: url('../assets/login-bg.jpg'); /* Replace with your bg image */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  display: flex;
+  background: rgba(255,255,255,0.92);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.19);
+  overflow: hidden;
+  width: 720px;
+  max-width: 95vw;
+  min-height: 390px;
+}
+
+.login-left {
+  background: linear-gradient(120deg, #075ee3 70%, #223b77 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 48%;
+  position: relative;
+  padding: 2.5rem 1.8rem;
+}
+
+.login-logo {
+  height: 48px;
+  margin-bottom: 18px;
+}
+
+.login-title {
+  font-size: 24px;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.login-desc {
+  font-size: 15px;
+  color: #e3e6eb;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.login-right {
+  width: 52%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7fafd;
+  padding: 2.5rem 1.7rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 270px;
+  gap: 20px;
+}
+
+.login-form h3 {
+  color: #282c34;
+  font-size: 21px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  padding: 11px 15px;
+  border: 1.2px solid #bfcbe3;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 3px;
+  background: #fff;
+  transition: border .2s;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+  border-color: #1564d4;
+  outline: none;
+}
+
+.login-form button {
+  background: #095ee3;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.08);
+  transition: background .19s;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background: #003f82;
+}
+
+.login-helper {
+  margin-top: 7px;
+  font-size: 14px;
+  color: #888;
+  display: block;
+  text-align: center;
+}

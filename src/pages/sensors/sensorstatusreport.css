@@ -1,0 +1,325 @@
+.sensor-report-container {
+  padding: 20px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.report-header {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.report-header h1 {
+  color: #232f3e;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.report-info {
+  display: flex;
+  gap: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+.report-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Left Column - Form */
+.form-column {
+  flex: 0 0 30%;
+  align-self: stretch;
+}
+
+/* Right Column - Table */
+.table-column {
+  flex: 0 0 70%;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.report-form {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Column-wise Form Layout */
+.form-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #ff9900;
+  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+}
+
+/* Date and Time Inputs */
+.datetime-input {
+  display: flex;
+  gap: 10px;
+}
+
+.date-input,
+.time-input {
+  position: relative;
+  flex: 1;
+}
+
+.date-input input,
+.time-input input {
+  width: 100%;
+}
+
+/* Enhanced Time Input Styling */
+.time-input input[type="time"] {
+  /* Ensure the time input is clearly visible */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  /* Allow the default time picker to show */
+  -webkit-appearance: menulist-button;
+  -moz-appearance: menulist-button;
+  appearance: auto;
+}
+
+.time-input input[type="time"]:focus {
+  outline: none;
+  border-color: #ff9900;
+  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+}
+
+/* Style the time picker spinner in WebKit browsers */
+.time-input input[type="time"]::-webkit-calendar-picker-indicator {
+  background-color: transparent;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.time-input input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  background-color: rgba(255, 153, 0, 0.1);
+}
+
+/* Style for Firefox */
+.time-input input[type="time"]::-moz-calendar-picker-indicator {
+  background-color: transparent;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.time-input input[type="time"]::-moz-calendar-picker-indicator:hover {
+  background-color: rgba(255, 153, 0, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.view-button {
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-button:hover {
+  background-color: #e88a00;
+}
+
+.view-button:active {
+  transform: translateY(1px);
+}
+
+.report-table {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #232f3e;
+  color: white;
+}
+
+th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+td {
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-maintenance {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.action-cell {
+  width: 50px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  color: #232f3e;
+}
+
+.action-btn:hover {
+  background-color: rgba(35, 47, 62, 0.1);
+}
+
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  color: #777;
+  font-size: 14px;
+  margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .report-content {
+    flex-direction: column;
+  }
+  
+  .form-column,
+  .table-column {
+    flex: 0 0 100%;
+  }
+  
+  .report-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .datetime-input {
+    flex-direction: column;
+  }
+  
+  .view-button {
+    width: 100%;
+  }
+  
+  .report-table {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 700px;
+  }
+  
+  .report-footer {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

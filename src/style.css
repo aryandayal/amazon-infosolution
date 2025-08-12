@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+.top-nav {
+  display: flex;
+  align-items: center;
+  background: #e0ecf2;
+  padding: 8px 16px;
+  gap: 16px;
+}
+.main-content {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+.sidebar {
+  width: 30%;
+  background: #f8fafb;
+  border-right: 1px solid #dbe9f5;
+  overflow-y: auto;
+}
+.vehicle-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.vehicle-table th,
+.vehicle-table td {
+  border: 1px solid #dbe9f5;
+  padding: 8px;
+}
+.map-container,
+.map-view {
+  flex: 1;
+  min-width: 420px;
+  background: #fff;
+}
+
+
+
