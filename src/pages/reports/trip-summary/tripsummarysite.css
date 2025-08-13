@@ -1,0 +1,497 @@
+.trip-summary-container * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.trip-summary-container body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.trip-summary-container .main-content {
+    display: flex;
+    gap: 20px;
+    min-height: calc(100vh - 40px);
+    padding: 20px;
+}
+
+.trip-summary-container .sidebar {
+    width: 320px;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    order: 1; /* Default order for desktop */
+}
+
+.trip-summary-container .sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 2px solid #2ecc71;
+    padding-bottom: 10px;
+}
+
+.trip-summary-container .form-group {
+    margin-bottom: 15px;
+}
+
+.trip-summary-container .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.trip-summary-container .form-group label::after {
+    content: " *";
+    color: #e74c3c;
+}
+
+.trip-summary-container .form-group select,
+.trip-summary-container .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border 0.3s;
+}
+
+.trip-summary-container .form-group select:focus,
+.trip-summary-container .form-group input:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+}
+
+.trip-summary-container .datetime-container {
+    display: flex;
+    gap: 8px;
+}
+
+.trip-summary-container .datetime-input {
+    flex: 1;
+}
+
+.trip-summary-container .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.trip-summary-container .checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+.trip-summary-container .checkbox-input {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.trip-summary-container .numeric-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.trip-summary-container .input-row {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-left: 26px; /* Align with checkbox labels */
+}
+
+.trip-summary-container .numeric-input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+}
+
+.trip-summary-container .arrows {
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-summary-container .arrow-button {
+    width: 24px;
+    height: 20px;
+    border: none;
+    background-color: #f8f9fa;
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trip-summary-container .arrow-button:hover {
+    background-color: #e9ecef;
+}
+
+.trip-summary-container .arrow-button:first-child {
+    border-bottom: 1px solid #ddd;
+}
+
+.trip-summary-container .unit {
+    padding: 0 10px;
+    font-size: 14px;
+    color: #555;
+    background-color: #f8f9fa;
+    border-left: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.trip-summary-container .view-button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.trip-summary-container .view-button:hover {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.trip-summary-container .report-area {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: auto;
+    order: 2; /* Default order for desktop */
+}
+
+.trip-summary-container .report-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.trip-summary-container .report-header h2 {
+    font-size: 22px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.trip-summary-container .date-range {
+    font-size: 16px;
+    color: #555;
+}
+
+.trip-summary-container .report-summary {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.trip-summary-container .summary-card {
+    flex: 1;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    border-left: 4px solid #2ecc71;
+}
+
+.trip-summary-container .summary-card h3 {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 5px;
+}
+
+.trip-summary-container .summary-card p {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.trip-summary-container .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.trip-summary-container .report-table th,
+.trip-summary-container .report-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.trip-summary-container .report-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #555;
+    position: sticky;
+    top: 0;
+}
+
+.trip-summary-container .report-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.trip-summary-container .empty-report {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #95a5a6;
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+}
+
+.trip-summary-container .loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #2ecc71;
+}
+
+.trip-summary-container .loading-spinner {
+    border: 4px solid rgba(46, 204, 113, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #2ecc71;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Tablet View */
+@media (max-width: 1024px) {
+    .trip-summary-container .main-content {
+        flex-direction: column;
+    }
+    
+    .trip-summary-container .sidebar {
+        width: 100%;
+        order: 1; /* Form at top */
+    }
+    
+    .trip-summary-container .report-area {
+        order: 2; /* Table at bottom */
+    }
+    
+    .trip-summary-container .report-summary {
+        flex-wrap: wrap;
+    }
+    
+    .trip-summary-container .summary-card {
+        flex-basis: calc(50% - 8px);
+    }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .trip-summary-container .main-content {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .trip-summary-container .sidebar,
+    .trip-summary-container .report-area {
+        padding: 15px;
+    }
+    
+    .trip-summary-container .sidebar {
+        order: 1; /* Ensure form is at top */
+    }
+    
+    .trip-summary-container .report-area {
+        order: 2; /* Ensure table is at bottom */
+    }
+    
+    .trip-summary-container .sidebar h2 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    
+    .trip-summary-container .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .trip-summary-container .form-group label {
+        font-size: 13px;
+    }
+    
+    .trip-summary-container .form-group select,
+    .trip-summary-container .form-group input {
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .trip-summary-container .datetime-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .trip-summary-container .input-row {
+        margin-left: 0; /* Reset alignment for mobile */
+    }
+    
+    .trip-summary-container .view-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .trip-summary-container .report-header h2 {
+        font-size: 18px;
+    }
+    
+    .trip-summary-container .date-range {
+        font-size: 14px;
+    }
+    
+    .trip-summary-container .report-summary {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .trip-summary-container .summary-card {
+        flex-basis: 100%;
+        padding: 10px;
+    }
+    
+    .trip-summary-container .summary-card h3 {
+        font-size: 12px;
+    }
+    
+    .trip-summary-container .summary-card p {
+        font-size: 18px;
+    }
+    
+    .trip-summary-container .report-table {
+        font-size: 12px;
+    }
+    
+    .trip-summary-container .report-table th,
+    .trip-summary-container .report-table td {
+        padding: 8px;
+    }
+    
+    .trip-summary-container .empty-report {
+        padding: 20px;
+        font-size: 16px;
+    }
+    
+    .trip-summary-container .loading-spinner {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Small Mobile View */
+@media (max-width: 480px) {
+    .trip-summary-container .main-content {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .trip-summary-container .sidebar,
+    .trip-summary-container .report-area {
+        padding: 12px;
+    }
+    
+    .trip-summary-container .sidebar h2 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+    
+    .trip-summary-container .form-group {
+        margin-bottom: 10px;
+    }
+    
+    .trip-summary-container .form-group label {
+        font-size: 12px;
+    }
+    
+    .trip-summary-container .form-group select,
+    .trip-summary-container .form-group input {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .trip-summary-container .input-row {
+        margin-left: 0; /* Reset alignment for mobile */
+    }
+    
+    .trip-summary-container .view-button {
+        padding: 9px;
+        font-size: 13px;
+    }
+    
+    .trip-summary-container .report-header h2 {
+        font-size: 16px;
+    }
+    
+    .trip-summary-container .date-range {
+        font-size: 13px;
+    }
+    
+    .trip-summary-container .summary-card {
+        padding: 8px;
+    }
+    
+    .trip-summary-container .summary-card h3 {
+        font-size: 11px;
+    }
+    
+    .trip-summary-container .summary-card p {
+        font-size: 16px;
+    }
+    
+    .trip-summary-container .report-table {
+        font-size: 11px;
+    }
+    
+    .trip-summary-container .report-table th,
+    .trip-summary-container .report-table td {
+        padding: 6px;
+    }
+    
+    .trip-summary-container .empty-report {
+        padding: 15px;
+        font-size: 14px;
+    }
+}

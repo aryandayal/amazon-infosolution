@@ -78,8 +78,8 @@ function App() {
         <Route path="/reports/basic-reports/overspeed" element={<OverSpeed />} />
         <Route path="/reports/basic-reports/all-vehicle-stoppage-report" element={<AllVehicleStoppageReport />} />
         {/* -----------------Reports SubRoutes trip-summary ---------------- */}
-        <Route path="/reports/trip-summary-site" element={<TripSummaryLocation />} />
-        <Route path="/reports/trip-summary-location" element={<TripSummarySite />} />
+        <Route path="/reports/trip-summary-site" element={<TripSummarySite />} />
+        <Route path="/reports/trip-summary-location" element={<TripSummaryLocation/>} />
         <Route path="/reports/trip-summary-time" element={<TripSummaryTime />} />
         {/* -----------------Reports SubRoutes performance-report ---------------- */}
         <Route path="/reports/performance-reports/vehicle-performance" element={<FleetDayWiseSummary />} />
@@ -120,9 +120,7 @@ function App() {
          <Route path="/admin/company/add-update-users" element={<AddUpdateUsers />} />
          <Route path="/admin/company/user-roles" element={<UserRoles />} />
          <Route path="/admin/company/user-support-ticket" element={<UserSupportTicket />} />
-        
-
-
+      
       </Routes>
     </BrowserRouter>
   );
