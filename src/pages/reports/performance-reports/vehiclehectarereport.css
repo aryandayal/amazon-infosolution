@@ -1,0 +1,236 @@
+.vehicle-hectare-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 120px);
+  padding: 20px;
+  background-color: #f5f7fa;
+}
+
+.hectare-content {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+}
+
+.hectare-sidebar {
+  width: 350px;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.hectare-sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.datetime-container {
+  display: flex;
+  gap: 10px;
+}
+
+.datetime-input {
+  flex: 1;
+}
+
+.view-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-button:hover {
+  background-color: #2980b9;
+}
+
+.hectare-report {
+  flex: 1;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.report-header {
+  margin-bottom: 20px;
+}
+
+.report-header h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-size: 20px;
+}
+
+.date-range {
+  font-size: 14px;
+  color: #7f8c8d;
+  background-color: #f8f9fa;
+  padding: 8px 15px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.empty-report {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+  text-align: center;
+}
+
+.report-summary {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  flex: 1;
+  min-width: 150px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  text-align: center;
+}
+
+.summary-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.summary-card p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.table-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.hectare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hectare-table th {
+  background-color: #f8f9fa;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #34495e;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.hectare-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.hectare-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.hectare-table tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 1024px) {
+  .hectare-content {
+    flex-direction: column;
+  }
+  
+  .hectare-sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .report-summary {
+    flex-direction: column;
+  }
+  
+  .summary-card {
+    width: 100%;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .hectare-table {
+    min-width: 800px;
+  }
+}

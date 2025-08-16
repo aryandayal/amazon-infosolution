@@ -1,120 +1,117 @@
-/* Full background enclosure */
-.login-bg {
-  background-image: url('../assets/login-bg.jpg'); /* Replace with your bg image */
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/* Home.css */
 
-.login-container {
+/* Base styles for desktop (PC browser mode) */
+.main-content {
   display: flex;
-  background: rgba(255,255,255,0.92);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.19);
+  flex-direction: row;
+  height: calc(100vh - 120px); /* Adjust based on header height */
   overflow: hidden;
-  width: 720px;
-  max-width: 95vw;
-  min-height: 390px;
 }
 
-.login-left {
-  background: linear-gradient(120deg, #075ee3 70%, #223b77 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  width: 48%;
+.sidebar {
+  width: 30%; /* Changed from fixed 350px to 30% */
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid #e0e0e0;
+}
+
+.map-container {
+  flex: 1; /* Takes remaining 70% of space */
   position: relative;
-  padding: 2.5rem 1.8rem;
 }
 
-.login-logo {
-  height: 48px;
-  margin-bottom: 18px;
+/* Mobile view styles */
+@media (max-width: 768px) {
+  /* Stack sidebar and map vertically */
+  .main-content {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+  
+  /* Make sidebar full width and shorter */
+  .sidebar {
+    width: 100%; /* Override 30% for mobile */
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    max-height: 40vh; /* Limit height to 40% of viewport */
+    overflow-y: auto;
+  }
+  
+  /* Make map container full width and taller */
+  .map-container {
+    height: 60vh; /* Take remaining 60% of viewport */
+    min-height: 300px; /* Ensure minimum height */
+  }
+  
+  /* Adjust VehicleIndicator for mobile */
+  .vehicle-indicator {
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .indicator-item {
+    margin: 5px;
+    flex: 1 1 calc(50% - 10px);
+    min-width: 120px;
+  }
+  
+  /* Adjust VehicleTable for mobile */
+  .vehicle-table {
+    font-size: 14px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 8px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Adjust MapView for mobile */
+  .map-container {
+    position: relative;
+  }
+  
+  .map-controls {
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+  }
+  
+  .map-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
 
-.login-title {
-  font-size: 24px;
-  letter-spacing: 1.2px;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.login-desc {
-  font-size: 15px;
-  color: #e3e6eb;
-  opacity: 0.85;
-  font-weight: 400;
-}
-
-.login-right {
-  width: 52%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f7fafd;
-  padding: 2.5rem 1.7rem;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 270px;
-  gap: 20px;
-}
-
-.login-form h3 {
-  color: #282c34;
-  font-size: 21px;
-  font-weight: 600;
-  text-align: left;
-  margin-bottom: 4px;
-}
-
-.login-form input[type="text"],
-.login-form input[type="password"] {
-  padding: 11px 15px;
-  border: 1.2px solid #bfcbe3;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-bottom: 3px;
-  background: #fff;
-  transition: border .2s;
-}
-
-.login-form input[type="text"]:focus,
-.login-form input[type="password"]:focus {
-  border-color: #1564d4;
-  outline: none;
-}
-
-.login-form button {
-  background: #095ee3;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 600;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 0;
-  box-shadow: 0 2px 3px rgba(0,0,0,0.08);
-  transition: background .19s;
-  cursor: pointer;
-}
-
-.login-form button:hover {
-  background: #003f82;
-}
-
-.login-helper {
-  margin-top: 7px;
-  font-size: 14px;
-  color: #888;
-  display: block;
-  text-align: center;
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  /* Further adjust indicator items */
+  .indicator-item {
+    flex: 1 1 100%;
+    min-width: 100px;
+  }
+  
+  /* Further adjust table */
+  .vehicle-table {
+    font-size: 12px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 6px 3px;
+  }
+  
+  /* Further adjust map controls */
+  .map-controls {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .map-button {
+    width: 100%;
+  }
 }

@@ -2,6 +2,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+
 .top-nav {
   display: flex;
   align-items: center;
@@ -9,25 +10,30 @@ body {
   padding: 8px 16px;
   gap: 16px;
 }
+
 .main-content {
   display: flex;
   height: calc(100vh - 50px);
 }
+
 .sidebar {
   width: 30%;
   background: #f8fafb;
   border-right: 1px solid #dbe9f5;
   overflow-y: auto;
 }
+
 .vehicle-table {
   width: 100%;
   border-collapse: collapse;
 }
+
 .vehicle-table th,
 .vehicle-table td {
   border: 1px solid #dbe9f5;
   padding: 8px;
 }
+
 .map-container,
 .map-view {
   flex: 1;
@@ -35,5 +41,63 @@ body {
   background: #fff;
 }
 
+/* Mobile View Styles */
+@media (max-width: 768px) {
+  .top-nav {
+    flex-wrap: wrap;
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .main-content {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #dbe9f5;
+    max-height: 40vh;
+  }
+  
+  .map-container,
+  .map-view {
+    min-width: 100%;
+    height: 60vh;
+  }
+  
+  .vehicle-table {
+    font-size: 14px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 6px 4px;
+  }
+}
 
-
+/* Small Mobile View Styles */
+@media (max-width: 480px) {
+  .top-nav {
+    padding: 6px;
+  }
+  
+  .sidebar {
+    max-height: 35vh;
+  }
+  
+  .map-container,
+  .map-view {
+    height: 65vh;
+  }
+  
+  .vehicle-table {
+    font-size: 12px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 4px 2px;
+  }
+}

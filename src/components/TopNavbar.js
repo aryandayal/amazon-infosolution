@@ -1,4 +1,5 @@
 import React from "react";
+import './topnavbar.css'; // Assuming you have a CSS file for styling
 
 function TopNavBar() {
   return (
@@ -6,7 +7,7 @@ function TopNavBar() {
       <input type="text" placeholder="Search company or vehicle..." />
       <button>VIEW</button>
       <button>DOWNLOAD</button>
-      <button>GP DETAILS</button>
+      <button>CP DETAILS</button>
     </nav>
   );
 }

@@ -17,7 +17,7 @@ import AllVehicleStoppageReport from "./pages/reports/basic-reports/AllVehicleSt
 import TripSummaryLocation from "./pages/reports/trip-summary/TripSummaryLocation";
 import TripSummarySite from "./pages/reports/trip-summary/TripSummarySite";
 import TripSummaryTime from "./pages/reports/trip-summary/TripSummaryTime";
-import FleetDayWiseSummary from "./pages/reports/performance-reports/FleetDayWiseSummary";
+import FleetDayWiseKmsSummary from "./pages/reports/performance-reports/FleetDayWiseKmsSummary";
 import KmsSummary from "./pages/reports/performance-reports/KmsSummary";
 import MonthWiseKmsSummary from "./pages/reports/performance-reports/MonthWiseKmsSummary";
 import VehicleHectareReport from "./pages/reports/performance-reports/VehicleHectareReport";
@@ -82,11 +82,11 @@ function App() {
         <Route path="/reports/trip-summary-location" element={<TripSummaryLocation/>} />
         <Route path="/reports/trip-summary-time" element={<TripSummaryTime />} />
         {/* -----------------Reports SubRoutes performance-report ---------------- */}
-        <Route path="/reports/performance-reports/vehicle-performance" element={<FleetDayWiseSummary />} />
+        <Route path="/reports/performance-reports/vehicle-performance" element={<VehiclePerformance />} />
         <Route path="/reports/performance-reports/kms-summary" element={<KmsSummary />} />
-        <Route path="/reports/performance-reports/fleet-day-wise-kms-summary" element={<MonthWiseKmsSummary />} />
-        <Route path="/reports/performance-reports/month-wise-kms-summary" element={<VehicleHectareReport />} />
-        <Route path="/reports/performance-reports/vehicle-hectare-report" element={<VehiclePerformance />} />
+        <Route path="/reports/performance-reports/fleet-day-wise-kms-summary" element={<FleetDayWiseKmsSummary />} />
+        <Route path="/reports/performance-reports/month-wise-kms-summary" element={<MonthWiseKmsSummary />} />
+        <Route path="/reports/performance-reports/vehicle-hectare-report" element={<VehicleHectareReport/>} />
            {/* -----------------Map Routes---------------- */}
         <Route path="/map/route-mapper" element={<RouteMapper />} />
         <Route path="/map/site-details" element={<SiteDetails />} />

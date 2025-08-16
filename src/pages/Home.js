@@ -4,6 +4,7 @@ import TopNavBar from "../components/TopNavbar";
 import VehicleTable from "../components/VehicleTable";
 import MapView from "../components/MapView";
 import VehicleIndicator  from "../components/VehicleIndicator";
+import "./home.css";
 
 const Home = () => {
     return (

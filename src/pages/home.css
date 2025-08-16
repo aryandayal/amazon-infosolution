@@ -1,0 +1,251 @@
+/* home.css */
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main container */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: #f5f7fa;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 30%;
+  height: 100%;
+  overflow-y: auto;
+  border-right: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Map container styles */
+.map-container {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+/* Vehicle indicator adjustments */
+.vehicle-indicator {
+  padding: 12px 15px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.indicator-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.indicator-item:hover {
+  background-color: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.indicator-item.active {
+  background-color: #3498db;
+  color: white;
+}
+
+/* Vehicle table adjustments */
+.vehicle-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.vehicle-table th,
+.vehicle-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.vehicle-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.vehicle-table tr {
+  transition: background-color 0.2s ease;
+}
+
+.vehicle-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.vehicle-table td {
+  color: #495057;
+  font-size: 14px;
+}
+
+/* Map view adjustments */
+.map-view {
+  width: 100%;
+  height: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.map-button {
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-weight: 500;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.map-button:hover {
+  background-color: #3498db;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile view styles */
+@media (max-width: 768px) {
+  /* Stack sidebar and map vertically */
+  .main-content {
+    flex-direction: column;
+  }
+  
+  /* Make sidebar full width and set height */
+  .sidebar {
+    width: 100%;
+    height: 60%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Make map container full width and set height */
+  .map-container {
+    height: 40%;
+  }
+  
+  /* Adjust VehicleIndicator for mobile */
+  .vehicle-indicator {
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .indicator-item {
+    padding: 6px 10px;
+    font-size: 12px;
+    flex: 1 1 calc(50% - 4px);
+    min-width: 100px;
+  }
+  
+  /* Adjust VehicleTable for mobile */
+  .vehicle-table {
+    font-size: 13px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 10px 12px;
+  }
+  
+  .vehicle-table th {
+    font-size: 11px;
+  }
+  
+  /* Adjust map controls for mobile */
+  .map-controls {
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    justify-content: center;
+  }
+  
+  .map-button {
+    padding: 8px 12px;
+    font-size: 12px;
+    flex: 1;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  /* Further adjust indicator items */
+  .indicator-item {
+    flex: 1 1 100%;
+    min-width: 100px;
+  }
+  
+  /* Further adjust table */
+  .vehicle-table {
+    font-size: 12px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 8px 10px;
+  }
+  
+  .vehicle-table th {
+    font-size: 10px;
+  }
+  
+  /* Further adjust map controls */
+  .map-controls {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .map-button {
+    width: 100%;
+  }
+}

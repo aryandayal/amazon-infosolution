@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
-import './monthwisekmssummary.css';
+import './fleetdaywisekmssummary.css';
 
-const MonthWiseKmsSummary = () => {
+const FleetDayWiseKmsSummary = () => {
   // State for form fields
   const [formData, setFormData] = useState({
     provider: 'Amazon info Solution',
     company: 'ERSS COMMAND & CC',
-    year: '2025',
-    month: 'Aug'
+    startDate: '2025-08-07',
+    startTime: '00:00',
+    endDate: '2025-08-14',
+    endTime: '23:59',
+    fromHour: '0', // New field for from hour
+    toHour: '23'   // New field for to hour
   });
 
   // State for report data
@@ -25,10 +29,44 @@ const MonthWiseKmsSummary = () => {
     });
   };
 
-  // Format month name for display
-  const formatMonthName = (month) => {
+  // Format date for display
+  const formatDateForDisplay = (dateStr, timeStr) => {
+    if (!dateStr) return '';
+    
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    
+    const year = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1; // Month is 0-indexed in JavaScript
+    const day = parseInt(parts[2]);
+    
+    const date = new Date(year, month, day);
+    if (isNaN(date.getTime())) return dateStr;
+    
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return monthNames[month - 1] || month;
+    const monthName = monthNames[date.getMonth()];
+    
+    return `${monthName} ${date.getDate()},${date.getFullYear()} ${timeStr}`;
+  };
+
+  // Format date for table
+  const formatDateForTable = (dateStr) => {
+    if (!dateStr) return '';
+    
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    
+    const year = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1;
+    const day = parseInt(parts[2]);
+    
+    const date = new Date(year, month, day);
+    if (isNaN(date.getTime())) return dateStr;
+    
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthName = monthNames[date.getMonth()];
+    
+    return `${monthName} ${date.getDate()},${date.getFullYear()}`;
   };
 
   // Generate random vehicle number
@@ -44,21 +82,25 @@ const MonthWiseKmsSummary = () => {
   // Generate mock report data
   const generateMockReportData = () => {
     const data = [];
-    const year = parseInt(formData.year);
-    const month = parseInt(formData.month);
     
-    // Get number of days in the selected month
-    const daysInMonth = new Date(year, month, 0).getDate();
+    // Parse start and end dates
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
     
-    // Generate data for each day in the month
-    for (let day = 1; day <= daysInMonth; day++) {
+    // Generate data for each day in the range
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      const dateStr = currentDate.toISOString().split('T')[0];
+      const formattedDate = formatDateForTable(dateStr);
+      
+      // Generate random data for this day
       const totalDistance = Math.floor(Math.random() * 500) + 100; // 100-600 km
       const numVehicles = Math.floor(Math.random() * 15) + 5; // 5-20 vehicles
       const avgDistance = Math.round(totalDistance / numVehicles);
       
       // Generate vehicle details
       const vehicles = [];
-      for (let i = 0; i < Math.min(numVehicles, 3); i++) {
+      for (let i = 0; i < numVehicles; i++) {
         vehicles.push({
           id: i + 1,
           vehicle: generateRandomVehicle(),
@@ -67,13 +109,17 @@ const MonthWiseKmsSummary = () => {
       }
       
       data.push({
-        id: day,
-        date: `${day.toString().padStart(2, '0')}-${formatMonthName(month)}-${year}`,
+        id: data.length + 1,
+        date: formattedDate,
+        dateStr: dateStr,
         totalDistance,
         numVehicles,
         avgDistance,
         vehicles
       });
+      
+      // Move to next day
+      currentDate.setDate(currentDate.getDate() + 1);
     }
     
     return data;
@@ -121,34 +167,18 @@ const MonthWiseKmsSummary = () => {
 
   const summaryStats = getSummaryStats();
 
-  // Generate year options (2020-2030)
-  const yearOptions = Array.from({ length: 11 }, (_, i) => (2020 + i).toString());
-  
-  // Generate month options
-  const monthOptions = [
-    { value: '1', label: 'Jan' },
-    { value: '2', label: 'Feb' },
-    { value: '3', label: 'Mar' },
-    { value: '4', label: 'Apr' },
-    { value: '5', label: 'May' },
-    { value: '6', label: 'Jun' },
-    { value: '7', label: 'Jul' },
-    { value: '8', label: 'Aug' },
-    { value: '9', label: 'Sep' },
-    { value: '10', label: 'Oct' },
-    { value: '11', label: 'Nov' },
-    { value: '12', label: 'Dec' }
-  ];
+  // Generate hour options (0-23)
+  const hourOptions = Array.from({ length: 24 }, (_, i) => i.toString());
 
   return (
     <>
       <Header />
-      <BottomNavbar text="MonthWiseKmsSummary" />
+      <BottomNavbar text="FleetDayWiseKmsSummary" />
       
-      <div className="month-kms-container">
-        <div className="month-content">
-          <div className="month-sidebar">
-            <h2>Month Wise KMS Summary</h2>
+      <div className="fleet-kms-container">
+        <div className="fleet-content">
+          <div className="fleet-sidebar">
+            <h2>Fleet Day Wise KMS Summary</h2>
             <form>
               <div className="form-group">
                 <label htmlFor="provider">Provider *</label>
@@ -183,31 +213,75 @@ const MonthWiseKmsSummary = () => {
               </div>
               
               <div className="form-group">
-                <label htmlFor="year">Year *</label>
+                <label>Start Date & Time *</label>
+                <div className="datetime-container">
+                  <input 
+                    type="date" 
+                    name="startDate" 
+                    value={formData.startDate} 
+                    onChange={handleInputChange}
+                    className="datetime-input"
+                  />
+                  <input 
+                    type="time" 
+                    name="startTime" 
+                    value={formData.startTime} 
+                    onChange={handleInputChange}
+                    className="datetime-input"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label>End Date & Time *</label>
+                <div className="datetime-container">
+                  <input 
+                    type="date" 
+                    name="endDate" 
+                    value={formData.endDate} 
+                    onChange={handleInputChange}
+                    className="datetime-input"
+                  />
+                  <input 
+                    type="time" 
+                    name="endTime" 
+                    value={formData.endTime} 
+                    onChange={handleInputChange}
+                    className="datetime-input"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label>From Hour *</label>
                 <select 
-                  id="year" 
-                  name="year" 
-                  value={formData.year} 
+                  name="fromHour" 
+                  value={formData.fromHour} 
                   onChange={handleInputChange}
+                  className="hour-select"
                   required
                 >
-                  {yearOptions.map(year => (
-                    <option key={year} value={year}>{year}</option>
+                  {hourOptions.map(hour => (
+                    <option key={`from-${hour}`} value={hour}>
+                      {hour.padStart(2, '0')}:00
+                    </option>
                   ))}
                 </select>
               </div>
               
               <div className="form-group">
-                <label htmlFor="month">Month *</label>
+                <label>To Hour *</label>
                 <select 
-                  id="month" 
-                  name="month" 
-                  value={formData.month} 
+                  name="toHour" 
+                  value={formData.toHour} 
                   onChange={handleInputChange}
+                  className="hour-select"
                   required
                 >
-                  {monthOptions.map(month => (
-                    <option key={month.value} value={month.value}>{month.label}</option>
+                  {hourOptions.map(hour => (
+                    <option key={`to-${hour}`} value={hour}>
+                      {hour.padStart(2, '0')}:00
+                    </option>
                   ))}
                 </select>
               </div>
@@ -222,12 +296,15 @@ const MonthWiseKmsSummary = () => {
             </form>
           </div>
           
-          <div className="month-report">
+          <div className="fleet-report">
             <div className="report-header">
-              <h2>Month Wise KMS Summary Report</h2>
+              <h2>Fleet Day Wise KMS Summary Report</h2>
               <div className="report-meta">
-                <div className="month-year">
-                  {formatMonthName(formData.month)} {formData.year}
+                <div className="date-range">
+                  {formatDateForDisplay(formData.startDate, formData.startTime)} To {formatDateForDisplay(formData.endDate, formData.endTime)}
+                </div>
+                <div className="time-range">
+                  From {formData.fromHour.padStart(2, '0')}:00 To {formData.toHour.padStart(2, '0')}:00
                 </div>
                 <div className="report-actions">
                   <div className="action-buttons">
@@ -246,7 +323,7 @@ const MonthWiseKmsSummary = () => {
               </div>
             ) : reportData.length === 0 ? (
               <div className="empty-report">
-                <p>Click "VIEW" to generate the month wise KMS summary report</p>
+                <p>Click "VIEW" to generate the fleet day wise KMS summary report</p>
               </div>
             ) : (
               <>
@@ -274,7 +351,7 @@ const MonthWiseKmsSummary = () => {
                 </div>
                 
                 <div className="table-container">
-                  <table className="month-table">
+                  <table className="fleet-table">
                     <thead>
                       <tr>
                         <th>Date</th>
@@ -293,7 +370,7 @@ const MonthWiseKmsSummary = () => {
                           <td>{day.avgDistance}</td>
                           <td>
                             <div className="vehicle-details">
-                              {day.vehicles.map(v => (
+                              {day.vehicles.slice(0, 3).map(v => (
                                 <div key={v.id} className="vehicle-item">
                                   {v.vehicle}: {v.distance} km
                                 </div>
@@ -319,4 +396,4 @@ const MonthWiseKmsSummary = () => {
   );
 };
 
-export default MonthWiseKmsSummary;
+export default FleetDayWiseKmsSummary;

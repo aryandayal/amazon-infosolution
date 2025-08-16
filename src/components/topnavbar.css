@@ -1,0 +1,93 @@
+.top-nav {
+  display: flex;
+  align-items: center;
+  background-color: #e0ecf2;
+  padding: 12px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 15px;
+}
+
+.top-nav input[type="text"] {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #dbe9f5;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.top-nav input[type="text"]:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.top-nav button {
+  padding: 10px 16px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.top-nav button:hover {
+  background-color: #3a7bc8;
+}
+
+.top-nav button:active {
+  transform: translateY(1px);
+}
+
+/* Mobile View Styles */
+@media (max-width: 768px) {
+  .top-nav {
+    flex-wrap: wrap;
+    padding: 10px 15px;
+    gap: 8px;
+  }
+  
+  .top-nav input[type="text"] {
+    order: -1;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  
+  /* Create a button container that takes full width */
+  .top-nav::after {
+    content: '';
+    flex: 1 0 100%;
+  }
+  
+  /* Make all buttons the same size */
+  .top-nav button {
+    flex: 1; /* Each button takes equal space */
+    padding: 8px 12px;
+    font-size: 13px;
+    min-width: 0; /* Remove minimum width to allow equal distribution */
+  }
+}
+
+/* Small Mobile View Styles */
+@media (max-width: 480px) {
+  .top-nav {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+  
+  .top-nav input[type="text"] {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  /* Make all buttons the same size */
+  .top-nav button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
