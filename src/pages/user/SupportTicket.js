@@ -1,5 +1,6 @@
 // import React from "react";
 import Header from "../../components/Header";
+import { Helmet } from "react-helmet";
 import BottomNavbar from "../../components/BottomNavbar";
 
 
@@ -73,6 +74,9 @@ const SupportTicket = () => {
 
   return (
     <>
+     <Helmet>
+            <title>Support Ticket</title>
+          </Helmet>
     <Header />
       <BottomNavbar text="Provider Support Ticket" />
    

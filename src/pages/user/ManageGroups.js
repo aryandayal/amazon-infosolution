@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './managegroups.css';
@@ -96,6 +97,9 @@ const ManageGroups = () => {
 
   return (
     <>
+     <Helmet>
+            <title></title>
+          </Helmet>
     <Header />
     <BottomNavbar text="Manage Groups" />
     <div className="manage-container">

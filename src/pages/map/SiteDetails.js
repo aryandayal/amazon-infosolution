@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import Header from '../../components/Header';
+import BottomNavbar from '../../components/BottomNavbar';
 import './sitedetails.css';
 
 // Import Leaflet components
@@ -159,6 +161,9 @@ const SiteDetails = () => {
   };
   
   return (
+    <>
+    <Header />
+    <BottomNavbar text="Site Details" />
     <div className="site-details-container">
       {/* Top Header */}
       <div className="header">
@@ -282,6 +287,7 @@ const SiteDetails = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

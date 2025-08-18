@@ -16,6 +16,7 @@
 // export default UserGroupAssociation;
 
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './usergroupassociation.css';
@@ -70,6 +71,9 @@ const UserGroupAssociation = () => {
 
   return (
     <>
+     <Helmet>
+            <title>User Group Association</title>
+          </Helmet>
     <Header />
         <BottomNavbar text="User Group Association" />
     <div className="file-container">

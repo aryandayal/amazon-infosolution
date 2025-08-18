@@ -48,6 +48,7 @@ import AddUpdateCompany from "./pages/admin/company/AddUpdateCompany";
 import AddUpdateUsers from "./pages/admin/company/AddUpdateUsers";
 import UserRoles from "./pages/admin/company/UserRoles";
 import UserSupportTicket from "./pages/admin/company/UserSupportTicket";
+import LoginPage from "./pages/Login";
 
 
 function App() {
@@ -120,6 +121,10 @@ function App() {
          <Route path="/admin/company/add-update-users" element={<AddUpdateUsers />} />
          <Route path="/admin/company/user-roles" element={<UserRoles />} />
          <Route path="/admin/company/user-support-ticket" element={<UserSupportTicket />} />
+
+
+                   {/* -----------------Login-page---------------- */}
+                   <Route path="/logout" element={<LoginPage />} />
       
       </Routes>
     </BrowserRouter>

@@ -32,6 +32,7 @@
 // export default groupGroupAssociation;
 
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './groupvehicleasso.css';
@@ -86,6 +87,9 @@ const GroupVehicleAsso = () => {
 
   return (
     <>
+     <Helmet>
+            <title>GroupVehicleAsso</title>
+          </Helmet>
     <Header />
         <BottomNavbar text="Group Vehicle Asso" />
     <div className="file-container">

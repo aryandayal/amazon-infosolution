@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import Header from '../../components/Header';
+import BottomNavbar from '../../components/BottomNavbar';
 import './fueldistancegraph.css';
 // Import Leaflet components
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -176,6 +178,9 @@ const FuelDistanceGraph = () => {
   };
   
   return (
+    <>
+    <Header />
+    <BottomNavbar text="Fuel Distance Graph" />
     <div className="fuel-distance-graph-container">
       {/* Top Header */}
       <div className="header">
@@ -361,6 +366,7 @@ const FuelDistanceGraph = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 export default FuelDistanceGraph;

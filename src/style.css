@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  overflow: scroll;
 }
-
 .top-nav {
   display: flex;
   align-items: center;
@@ -10,37 +10,31 @@ body {
   padding: 8px 16px;
   gap: 16px;
 }
-
 .main-content {
   display: flex;
   height: calc(100vh - 50px);
 }
-
 .sidebar {
   width: 30%;
   background: #f8fafb;
   border-right: 1px solid #dbe9f5;
   overflow-y: auto;
 }
-
 .vehicle-table {
   width: 100%;
   border-collapse: collapse;
 }
-
 .vehicle-table th,
 .vehicle-table td {
   border: 1px solid #dbe9f5;
   padding: 8px;
 }
-
 .map-container,
 .map-view {
   flex: 1;
   min-width: 420px;
   background: #fff;
 }
-
 /* Mobile View Styles */
 @media (max-width: 768px) {
   .top-nav {
@@ -59,6 +53,28 @@ body {
     border-right: none;
     border-bottom: 1px solid #dbe9f5;
     max-height: 40vh;
+    /* Custom scrollbar for mobile */
+    scrollbar-width: thin;
+    scrollbar-color: #4a90e2 #f1f1f1;
+  }
+  
+  /* Custom scrollbar for Webkit browsers */
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #4a90e2;
+    border-radius: 3px;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #3a7bc8;
   }
   
   .map-container,
@@ -76,15 +92,42 @@ body {
     padding: 6px 4px;
   }
 }
-
 /* Small Mobile View Styles */
 @media (max-width: 480px) {
   .top-nav {
     padding: 6px;
   }
+
+  body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: scroll;
+}
   
   .sidebar {
     max-height: 35vh;
+    /* Custom scrollbar for small mobile */
+    scrollbar-width: thin;
+    scrollbar-color: #4a90e2 #f1f1f1;
+  }
+  
+  /* Custom scrollbar for Webkit browsers */
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #4a90e2;
+    border-radius: 3px;
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #3a7bc8;
   }
   
   .map-container,

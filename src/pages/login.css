@@ -1,117 +1,319 @@
-/* Home.css */
+/* ===== Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-/* Base styles for desktop (PC browser mode) */
-.main-content {
+body {
+  background-color: #f5f5f5;
+}
+
+/* ===== Background ===== */
+.login-bg {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url('../assets/login-bg.jpg');
+  background-size: cover;
+  background-position: center;
   display: flex;
-  flex-direction: row;
-  height: calc(100vh - 120px); /* Adjust based on header height */
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  overflow: hidden; /* Hide overflow when container shifts */
+}
+
+/* ===== Main Container ===== */
+.login-container {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 15px;
   overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease; /* Smooth transition for shift */
 }
 
-.sidebar {
-  width: 30%; /* Changed from fixed 350px to 30% */
-  flex-shrink: 0;
-  overflow-y: auto;
-  border-right: 1px solid #e0e0e0;
+/* ===== Blue Section ===== */
+.login-blue {
+  background: linear-gradient(135deg, #0047AB, #0066CC);
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.map-container {
-  flex: 1; /* Takes remaining 70% of space */
-  position: relative;
+.login-logo {
+  width: 300px;
+  height: 80px;
+  margin-bottom: 20px;
 }
 
-/* Mobile view styles */
+.login-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.login-desc {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* ===== Login Form Section ===== */
+.login-form-section {
+  background-color: white;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Form Styles ===== */
+.login-form {
+  width: 100%;
+  max-width: 350px;
+}
+
+.login-form h3 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #333;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 25px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #0047AB;
+  box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.2);
+  outline: none;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #0047AB, #0066CC);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 71, 171, 0.4);
+}
+
+.login-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-helper {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ===== Desktop View with Left Shift ===== */
+@media (min-width: 1025px) {
+  .login-bg {
+    justify-content: center; /* Keep centered for positioning reference */
+    padding-left: 0;
+  }
+  
+  .login-container {
+    transform: translateX(-50%); /* Shift container 50% to the left */
+  }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .login-bg {
+    justify-content: center; /* Reset to center for tablets */
+    padding-left: 15px;
+  }
+  
+  .login-container {
+    transform: translateX(0); /* Reset shift for tablets */
+  }
+}
+
 @media (max-width: 768px) {
-  /* Stack sidebar and map vertically */
-  .main-content {
-    flex-direction: column;
-    height: auto;
-    overflow: visible;
-  }
-  
-  /* Make sidebar full width and shorter */
-  .sidebar {
-    width: 100%; /* Override 30% for mobile */
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-    max-height: 40vh; /* Limit height to 40% of viewport */
-    overflow-y: auto;
-  }
-  
-  /* Make map container full width and taller */
-  .map-container {
-    height: 60vh; /* Take remaining 60% of viewport */
-    min-height: 300px; /* Ensure minimum height */
-  }
-  
-  /* Adjust VehicleIndicator for mobile */
-  .vehicle-indicator {
+  .login-bg {
     padding: 10px;
-    flex-wrap: wrap;
-    justify-content: space-between;
   }
   
-  .indicator-item {
-    margin: 5px;
-    flex: 1 1 calc(50% - 10px);
-    min-width: 120px;
+  .login-container {
+    max-width: 400px;
+    border-radius: 10px;
   }
   
-  /* Adjust VehicleTable for mobile */
-  .vehicle-table {
-    font-size: 14px;
+  .login-blue {
+    padding: 30px;
   }
   
-  .vehicle-table th,
-  .vehicle-table td {
-    padding: 8px 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .login-logo {
+    width: 200px;
+    height: 60px;
   }
   
-  /* Adjust MapView for mobile */
-  .map-container {
-    position: relative;
+  .login-title {
+    font-size: 1.8rem;
   }
   
-  .map-controls {
-    bottom: 10px;
-    right: 10px;
-    left: 10px;
+  .login-desc {
+    font-size: 0.9rem;
   }
   
-  .map-button {
-    padding: 8px 12px;
-    font-size: 12px;
+  .login-form-section {
+    padding: 30px;
+  }
+  
+  .login-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-group input {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .login-form button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .login-helper {
+    font-size: 0.8rem;
+    margin-top: 15px;
   }
 }
 
-/* Extra small mobile devices */
 @media (max-width: 480px) {
-  /* Further adjust indicator items */
-  .indicator-item {
-    flex: 1 1 100%;
-    min-width: 100px;
+  .login-bg {
+    padding: 5px;
   }
   
-  /* Further adjust table */
-  .vehicle-table {
-    font-size: 12px;
+  .login-container {
+    max-width: 350px;
+    border-radius: 8px;
   }
   
-  .vehicle-table th,
-  .vehicle-table td {
-    padding: 6px 3px;
+  .login-blue {
+    padding: 20px;
   }
   
-  /* Further adjust map controls */
-  .map-controls {
-    flex-direction: column;
-    gap: 5px;
+  .login-logo {
+    width: 200px;
+    height: 50px;
   }
   
-  .map-button {
-    width: 100%;
+  .login-title {
+    font-size: 1.5rem;
+  }
+  
+  .login-desc {
+    font-size: 0.85rem;
+  }
+  
+  .login-form-section {
+    padding: 20px;
+  }
+  
+  .login-form h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group input {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .login-form button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .login-helper {
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== Extra Small Mobile ===== */
+@media (max-width: 320px) {
+  .login-container {
+    max-width: 300px;
+  }
+  
+  .login-blue {
+    padding: 15px;
+  }
+  
+  .login-logo {
+    width: 100px;
+    height: 40px;
+  }
+  
+  .login-title {
+    font-size: 1.3rem;
+  }
+  
+  .login-desc {
+    font-size: 0.8rem;
+  }
+  
+  .login-form-section {
+    padding: 15px;
+  }
+  
+  .login-form h3 {
+    font-size: 1.1rem;
+  }
+  
+  .input-group input {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .login-form button {
+    padding: 8px;
+    font-size: 0.85rem;
   }
 }

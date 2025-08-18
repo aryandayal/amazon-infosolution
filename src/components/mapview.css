@@ -1,0 +1,68 @@
+/* MapView.css */
+
+.map-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.map-view {
+  width: 100%;
+  height: 100%;
+}
+
+/* For tablets and smaller devices */
+@media screen and (max-width: 768px) {
+  .map-container {
+    height: 70vh;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Adjust icon size for smaller screens */
+  .leaflet-div-icon {
+    background-size: 40px 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* For mobile phones */
+@media screen and (max-width: 480px) {
+  .map-container {
+    height: 60vh;
+  }
+  
+  /* Adjust popup for mobile */
+  .leaflet-popup-content-wrapper {
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
+  .leaflet-popup-content {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  /* Adjust controls for touch */
+  .leaflet-control-zoom {
+    font-size: 18px;
+  }
+  
+  .leaflet-control-zoom a {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+  }
+}
+
+/* For very small mobile phones */
+@media screen and (max-width: 320px) {
+  .map-container {
+    height: 50vh;
+  }
+  
+  .leaflet-popup-content {
+    font-size: 12px;
+  }
+}
