@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 // import './allvehiclestoppagereport.css';
@@ -149,6 +150,9 @@ const AllVehicleStoppage = () => {
 
   return (
     <>
+    <Helmet>
+      <title>All Vehicle Stoppage Report</title>
+    </Helmet>
     <Header />
     <BottomNavbar text="All Vehicle Stoppage" />
     <div className="all-vehicle-stoppage-container">

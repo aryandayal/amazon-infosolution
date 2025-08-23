@@ -79,7 +79,6 @@ const SupportTicket = () => {
           </Helmet>
     <Header />
       <BottomNavbar text="Provider Support Ticket" />
-   
     <div className="ticket-container">
       <div className="ticket-layout">
         {/* Left Column - Form */}

@@ -1,20 +1,3 @@
-// import React from "react";
-// import Header from "../../components/Header";
-// import BottomNavbar from "../../components/BottomNavbar";
-
-
-// const UserGroupAssociation = () => {
-//     return (
-//         <>
-//         <Header />
-//         <BottomNavbar text="User Group Association" />
-//         <h2>User Group Association</h2>
-//         </>
-//     )
-// }
-
-// export default UserGroupAssociation;
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './anauthorisedsensorusage.css';
@@ -69,6 +70,9 @@ const UnauthorisedSensorUsage = () => {
 
   return (
     <>
+      <Helmet>
+            <title>Unauthorised Sensor Usage</title>
+          </Helmet>
     <Header />
     <BottomNavbar text="Sensor Status Report" />
     <div className="sensor-report-container">

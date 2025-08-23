@@ -1,0 +1,222 @@
+.route-list-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+.report-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.date-range {
+  display: flex;
+  gap: 15px;
+}
+.date-range span {
+  font-size: 14px;
+}
+/* Main Content Styles */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+/* Sidebar Styles */
+.sidebar {
+  width: 320px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  overflow-y: auto;
+  height: 100%;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+/* Custom scrollbar for Webkit browsers */
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+/* Input Row Styles - for Provider and Company inputs */
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+/* Button Row Styles - for VIEW, ADD, and CLEAR buttons */
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevents flex items from overflowing */
+}
+.provider-group {
+  flex: 1.2;
+}
+.company-group {
+  flex: 1;
+}
+.route-group {
+  flex: 1;
+}
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.filter-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  box-sizing: border-box;
+  height: 36px;
+  font-size: 14px;
+}
+.filter-input:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+/* Button Styles */
+.view-button, .add-button, .clear-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  height: 36px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  flex-shrink: 0; /* Prevents buttons from shrinking */
+}
+.view-button {
+  background-color: #4285f4;
+  color: white;
+  width: 80px;
+}
+.view-button:hover {
+  background-color: #3367d6;
+}
+.add-button {
+  background-color: #28a745;
+  color: white;
+  width: 80px;
+}
+.add-button:hover {
+  background-color: #218838;
+}
+.clear-button {
+  background-color: #dc3545;
+  color: white;
+  width: 160px;
+}
+.clear-button:hover {
+  background-color: #c82333;
+}
+/* Divider Styles */
+.divider {
+  height: 1px;
+  background-color: #ddd;
+  margin: 10px 0 20px 0;
+}
+/* Map Container Styles */
+.map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+/* Map Mode Button - positioned in top corner of map */
+.map-mode-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  padding: 10px 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+}
+.map-mode-btn:hover {
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+/* Route Popup Styles */
+.route-popup h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+.route-popup p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+.route-popup strong {
+  color: #555;
+}
+/* Status Bar Styles */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+}
+.status-item {
+  display: flex;
+  align-items: center;
+}
+.status-label {
+  margin-right: 8px;
+  font-weight: bold;
+}
+.status-active {
+  color: #28a745;
+  font-weight: bold;
+}
+/* Leaflet marker fix */
+.leaflet-default-icon-path {
+  background-image: url('leaflet/dist/images/marker-icon.png');
+}

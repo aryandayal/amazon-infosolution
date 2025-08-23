@@ -100,9 +100,9 @@ function App() {
         <Route path="/fuel/fuel-consumption" element={<FuelConsumption />} />
              {/* -----------------Routes Routes---------------- */}
         <Route path="/routes/add-route" element={<AddRoute />} />
-        <Route path="/routes/route-list" element={<RestrictedRouteList />} />
-        <Route path="/routes/restricted-route-list" element={<RouteDeviation />} />
-        <Route path="/routes/route-deviation" element={<RouteList />} />
+        <Route path="/routes/route-list" element={<RouteList />} />
+        <Route path="/routes/restricted-route-list" element={<RestrictedRouteList />} />
+        <Route path="/routes/route-deviation" element={<RouteDeviation />} />
          {/* -----------------Admin Routes---------------- */}
         <Route path="/admin/device-status" element={<DeviceStatus />} />
             {/* -----------------Admin SubRoute---------------- */}
