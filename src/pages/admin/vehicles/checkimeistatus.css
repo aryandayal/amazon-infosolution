@@ -1,0 +1,241 @@
+.check-imei-status-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #d6eaf8;
+  padding: 20px;
+}
+
+.form-section {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px;
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.form-container {
+  display: flex;
+  gap: 30px;
+}
+
+.left-section, .right-section {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3498db;
+  background-color: #ffffff;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.form-actions button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #3498db;
+  color: white;
+}
+
+.form-actions button:hover {
+  background-color: #2980b9;
+}
+
+.info-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border-left: 4px solid #3498db;
+}
+
+.info-section h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.info-section p {
+  margin-bottom: 10px;
+  color: #34495e;
+}
+
+.map-container {
+  height: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #bdc3c7;
+}
+
+/* Leaflet map fix */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .check-imei-status-container {
+    padding: 10px;
+  }
+  
+  .form-section {
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .form-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+  
+  .form-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .left-section, .right-section {
+    width: 100%;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  .form-group input {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .form-actions {
+    margin-top: 20px;
+  }
+  
+  .form-actions button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .info-section {
+    margin-top: 20px;
+    padding: 15px;
+  }
+  
+  .info-section h3 {
+    font-size: 16px;
+  }
+  
+  .info-section p {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  
+  .map-container {
+    height: 300px;
+    border-radius: 8px;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  .check-imei-status-container {
+    padding: 5px;
+  }
+  
+  .form-section {
+    padding: 15px;
+  }
+  
+  .form-section h2 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
+  
+  .form-container {
+    gap: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 12px;
+  }
+  
+  .form-group label {
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  
+  .form-group input {
+    padding: 8px;
+    font-size: 13px;
+  }
+  
+  .form-actions {
+    margin-top: 15px;
+  }
+  
+  .form-actions button {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+  
+  .info-section {
+    margin-top: 15px;
+    padding: 12px;
+  }
+  
+  .info-section h3 {
+    font-size: 14px;
+  }
+  
+  .info-section p {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .map-container {
+    height: 250px;
+    border-radius: 6px;
+  }
+}

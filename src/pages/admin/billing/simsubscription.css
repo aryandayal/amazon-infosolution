@@ -1,0 +1,114 @@
+/* SIM Subscription Management Styles */
+.sim-subscription-container {
+  width: '100%';
+  padding: 24px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.page-title {
+  color: #2c3e50;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: flex-end;
+}
+
+.filter-item {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.filter-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+.download-button {
+  color: #546e7a;
+  border-color: #cfd8dc;
+}
+
+/* Table */
+.table-container {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.sim-table {
+  min-width: 1400px; /* Increased to accommodate more columns */
+}
+
+.table-row:hover {
+  background-color: #f9fafb;
+}
+
+.sim-number {
+  font-family: monospace;
+  font-weight: 500;
+}
+
+.status-chip {
+  font-size: 0.75rem;
+  height: 24px;
+}
+
+.action-button {
+  color: #546e7a;
+}
+
+/* Action Buttons Styling */
+.table-row .MuiButton-root {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  min-width: 80px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .sim-table {
+    min-width: 1200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column;
+  }
+  
+  .filter-item {
+    width: 100%;
+  }
+  
+  .filter-actions {
+    margin-left: 0;
+    margin-top: 12px;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+}

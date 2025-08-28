@@ -1,0 +1,254 @@
+.supporthelp-root {
+  font-family: Arial, sans-serif;
+  background: #f7fafb;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  margin: 20px 0 0 20px;
+}
+.tab {
+  display: inline-block;
+  padding: 16px 32px;
+  background: #eee;
+  border-radius: 8px 8px 0 0;
+  margin-right: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #222;
+  border-bottom: 4px solid transparent;
+  transition: background 0.2s, border-bottom 0.2s;
+}
+.tab.active {
+  background: #2196f3;
+  color: white;
+  border-bottom: 4px solid #2196f3;
+}
+
+.help-heading {
+  margin: 36px 0 0 20px;
+}
+
+.section-heading {
+  text-align: center;
+  font-size: 2rem;
+  text-decoration: underline;
+  font-weight: bold;
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+
+.help-card, .manage-card {
+  margin: 32px 20px 0 20px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 15px #ddd7;
+  padding: 16px;
+  max-width: 1200px;
+}
+
+.column-table, .color-table, .devicecommands-table, .apn-table, .mv-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 16px;
+  font-size: 1rem;
+}
+
+.column-table th, .column-table td, .color-table td,
+.devicecommands-table th, .devicecommands-table td,
+.apn-table th, .apn-table td,
+.mv-table th, .mv-table td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.yellow-bg {
+  background: #ffff2d !important;
+  font-weight: bold;
+}
+.green-bg {
+  background: #009944;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+}
+.red-bg {
+  background: #ff1111;
+  color: #111;
+  font-weight: bold;
+  text-align: center;
+}
+.cyan-bg {
+  background: #16e9fa;
+  color: #222;
+  font-weight: bold;
+  text-align: center;
+}
+.colorbold {
+  font-weight: bold;
+}
+
+/* Device Command Page */
+.device-type-row {
+  margin: 20px 0 0 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.device-type-label {
+  font-size: 1.1rem;
+}
+.device-type-select {
+  font-size: 1.1rem;
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  min-width: 200px;
+}
+.device-commands-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  margin-top: 24px;
+}
+.devicecommands-table {
+  width: 90%;
+  background: white;
+}
+.devicecommands-table th, .devicecommands-table td {
+  vertical-align: top;
+}
+.th-blue {
+  background: #b2dcf6;
+  font-weight: bold;
+  font-size: 1.15rem;
+}
+.apn-table {
+  width: 220px;
+  background: white;
+}
+.apn-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: left;
+  padding: 6px 10px;
+  background: #f7fafb;
+}
+.apn-bold {
+  font-weight: bold;
+}
+
+/* Manage Vehicles */
+.manage-card {
+  max-width: 540px;
+  margin: 36px auto 0 auto;
+  border-radius: 10px;
+  padding: 30px 30px 30px 30px;
+  box-shadow: 0 2px 16px #ddd7;
+  background: #fff;
+}
+.mv-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.mv-label {
+  width: 200px;
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+.mv-input {
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin-right: 8px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  width: 130px;
+  min-width: 80px;
+  background: #fafbfa;
+}
+.mv-charge {
+  width: 60px;
+}
+.mv-tip {
+  color: #444;
+  font-size: 0.96rem;
+}
+.mv-warning {
+  color: #ff1111;
+  font-weight: bold;
+  margin: 8px 0 14px 0;
+  font-size: 1.07rem;
+}
+.mv-table {
+  width: 100%;
+  background: #fff;
+  margin-top: 8px;
+}
+.mv-th-num, .mv-td-num {
+  width: 32px !important;
+  text-align: center;
+}
+.mv-th-num {
+  font-weight: bold;
+}
+
+@media (max-width: 720px) {
+  .column-table,
+  .color-table,
+  .devicecommands-table,
+  .apn-table,
+  .mv-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .device-commands-flex {
+    flex-direction: column;
+    gap: 18px;
+    margin: 16px 20px;
+  }
+
+  /* Tabs wrap and stack vertically on small screens */
+  .tabs {
+    flex-wrap: wrap;
+  }
+  .tab {
+    flex: 1 1 100%;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  /* Smaller heading fonts for mobile */
+  .help-heading {
+    font-size: 1.8rem;
+  }
+  .section-heading {
+    font-size: 1.5rem;
+  }
+  .mv-label {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .mv-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .mv-input {
+    width: 100% !important;
+  }
+  .device-type-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .device-type-select {
+    width: 100%;
+    min-width: auto;
+  }
+}
+

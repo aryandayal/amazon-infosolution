@@ -66,12 +66,10 @@ const SupportTicket = () => {
     
     alert('Ticket submitted successfully!');
   };
-
   const handleView = () => {
     // This would typically navigate to a tickets view page
     console.log('Viewing all tickets');
   };
-
   return (
     <>
      <Helmet>

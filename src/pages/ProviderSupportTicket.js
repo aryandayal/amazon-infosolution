@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Header from '../../../components/Header';
-import BottomNavbar from '../../../components/BottomNavbar';
-import './usersupportticket.css';
+import Header from '../components/Header';
+import BottomNavbar from '../components/BottomNavbar';
+import './providersupportticket.css';
 
-const UserSupportTicket = () => {
+const ProviderSupportTicket = () => {
   // Form state
   const [formData, setFormData] = useState({
     select: 'Show Ticket',
@@ -155,7 +155,7 @@ const UserSupportTicket = () => {
   return (
     <>
     <Header />
-    <BottomNavbar text="User Support Ticket"/>
+    <BottomNavbar text="Provider Support Ticket"/>
    
     <div className="support-ticket-container">
       <div className="left-panel">
@@ -419,4 +419,4 @@ const UserSupportTicket = () => {
   );
 };
 
-export default UserSupportTicket;
+export default ProviderSupportTicket;

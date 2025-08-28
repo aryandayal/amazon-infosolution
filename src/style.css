@@ -34,6 +34,7 @@ body {
   flex: 1;
   min-width: 420px;
   background: #fff;
+  height: 100vh;
 }
 /* Mobile View Styles */
 @media (max-width: 768px) {

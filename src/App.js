@@ -49,6 +49,8 @@ import AddUpdateUsers from "./pages/admin/company/AddUpdateUsers";
 import UserRoles from "./pages/admin/company/UserRoles";
 import UserSupportTicket from "./pages/admin/company/UserSupportTicket";
 import LoginPage from "./pages/Login";
+import ProviderSupportTicket from "./pages/ProviderSupportTicket";
+import SupportHelp from "./pages/SupportHelp";
 
 
 function App() {
@@ -121,6 +123,12 @@ function App() {
          <Route path="/admin/company/add-update-users" element={<AddUpdateUsers />} />
          <Route path="/admin/company/user-roles" element={<UserRoles />} />
          <Route path="/admin/company/user-support-ticket" element={<UserSupportTicket />} />
+
+             {/* -----------------Provider-support-page---------------- */}
+            <Route path="/provider-support-ticket" element={<ProviderSupportTicket />} />
+
+               {/* -----------------Support-help---------------- */}
+            <Route path="/support" element={<SupportHelp />} />
 
 
                    {/* -----------------Login-page---------------- */}

@@ -1,0 +1,136 @@
+.imei-map-vehicle-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #d6eaf8;
+  padding: 20px;
+}
+
+.form-section {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px;
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.form-container {
+  display: flex;
+  gap: 30px;
+}
+
+.left-section, .right-section {
+  flex: 1;
+}
+
+.right-section h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.vehicle-details-container {
+  display: flex;
+  gap: 20px;
+}
+
+.vehicle-column {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3498db;
+  background-color: #ffffff;
+}
+
+.numeric-input {
+  display: flex;
+  align-items: center;
+}
+
+.numeric-input button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #bdc3c7;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.numeric-input button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.numeric-input button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+.numeric-input input {
+  width: 60px;
+  text-align: center;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.form-actions button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #3498db;
+  color: white;
+}
+
+.form-actions button:hover {
+  background-color: #2980b9;
+}
+
+.left-section .form-actions button {
+  background-color: #27ae60;
+}
+
+.left-section .form-actions button:hover {
+  background-color: #229954;
+}

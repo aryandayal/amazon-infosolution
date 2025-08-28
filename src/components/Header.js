@@ -524,7 +524,7 @@ const Header = () => {
         {/* Icon Buttons */}
         <div className="icon-buttons">
           {/* Admin Icon - Normal Link */}
-          <Link to="/admin/settings" className="icon-btn admin-icon">
+          <Link to="/provider-support-ticket" className="icon-btn admin-icon">
             <i className="fas fa-user-cog"></i>
           </Link>
           
@@ -546,7 +546,7 @@ const Header = () => {
               <i className="fas fa-user-shield"></i>
             </Link>
             <ul className="dropdown-menu">
-              <li><Link to="/admin/overview"><i className="fas fa-tachometer-alt"></i> Admin Overview</Link></li>
+              <li><Link to="#"> Admin Overview</Link></li>
             </ul>
           </div>
           
