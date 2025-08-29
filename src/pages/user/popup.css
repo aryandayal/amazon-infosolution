@@ -1,0 +1,280 @@
+.popup-container {
+  display: flex;
+  height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #333;
+}
+
+.left-panel {
+  width: 360px;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow: hidden;
+}
+
+h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #444;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+.view-button {
+  padding: 4px 12px; /* Even smaller padding */
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.8rem; /* Smaller font size */
+  align-self: flex-start; /* Align to left */
+  width: fit-content; /* Only as wide as content */
+}
+
+.view-button:hover {
+  background-color: #3a5ce5;
+}
+
+.address-list {
+  margin-top: 20px;
+}
+
+.address-list table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.address-list th, 
+.address-list td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.address-list th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.toolbar input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+
+.bulk-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bulk-actions button {
+  padding: 8px 12px;
+  background-color: #f1f3f9;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.bulk-actions button:hover {
+  background-color: #e2e5f1;
+}
+
+.table-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 10;
+}
+
+th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.85rem;
+}
+
+tbody tr:hover {
+  background-color: #f5f7ff;
+}
+
+tbody tr.selected {
+  background-color: #eef1ff;
+}
+
+input[type="number"] {
+  width: 60px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+input[type="number"].error {
+  border-color: #d32f2f;
+  background-color: #fff8f8;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .popup-container {
+    flex-direction: column;
+    height: auto; /* Allow height to be determined by content */
+    overflow-y: auto; /* Enable scrolling for the entire container */
+  }
+  
+  .left-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px;
+  }
+  
+  .right-panel {
+    padding: 15px;
+    height: auto; /* Allow height to be determined by content */
+  }
+  
+  h2 {
+    font-size: 1.2rem;
+  }
+  
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .toolbar input {
+    width: 100%;
+  }
+  
+  .bulk-actions {
+    justify-content: center;
+  }
+  
+  .table-container {
+    height: 50vh; /* Fixed height for table container */
+  }
+  
+  th, td {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+  
+  input[type="number"] {
+    width: 50px;
+  }
+  
+  .view-button {
+    align-self: stretch; /* Full width on mobile */
+    width: auto; /* Override desktop width */
+  }
+}
+
+@media (max-width: 480px) {
+  .left-panel, .right-panel {
+    padding: 10px;
+  }
+  
+  .form-group {
+    gap: 3px;
+  }
+  
+  label {
+    font-size: 0.8rem;
+  }
+  
+  select, input[type="number"] {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .address-list th, 
+  .address-list td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .bulk-actions button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .table-container {
+    height: 40vh; /* Smaller fixed height for very small screens */
+  }
+}
