@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './providerbilling.css';
@@ -50,6 +51,9 @@ const ProviderBilling = () => {
 
   return (
     <>
+    <Helmet>
+            <title>ProviderBilling</title>
+          </Helmet>
     <Header />
     <BottomNavbar text="Provider Billing"/>
     <div className="provider-billing-container">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../components/Header';
 import BottomNavbar from '../../components/BottomNavbar';
 import './sitedetails.css';
@@ -162,6 +163,9 @@ const SiteDetails = () => {
   
   return (
     <>
+    <Helmet>
+                <title>SiteDetails</title>
+              </Helmet>
     <Header />
     <BottomNavbar text="Site Details" />
     <div className="site-details-container">

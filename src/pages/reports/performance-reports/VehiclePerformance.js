@@ -1,20 +1,5 @@
-// import React from "react";
-// import Header from "../../../components/Header";
-// import BottomNavbar from "../../../components/BottomNavbar";
-
-
-// const VehiclePerformance = () => {
-//     return (
-//         <>
-//         <Header />
-//         <BottomNavbar text="VehiclePerformance" />
-//         <h2>VehiclePerformance</h2>
-//         </>
-//     )
-// }
-
-// export default VehiclePerformance;
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './vehicleperformance.css';
@@ -159,6 +144,9 @@ const VehiclePerformance = () => {
 
   return (
     <>
+    <Helmet>
+                <title>VehiclePerformance</title>
+              </Helmet>
       <Header />
       <BottomNavbar text="VehiclePerformance" />
       

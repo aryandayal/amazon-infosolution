@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './stoppage.css';
@@ -157,6 +158,9 @@ const Stoppage = () => {
 
   return (
     <>
+    <Helmet>
+                <title>Stoppage</title>
+              </Helmet>
      <Header />
       <BottomNavbar text="Stoppage" />
     <div className="container">

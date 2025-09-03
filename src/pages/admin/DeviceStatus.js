@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './devicestatus.css';
@@ -39,6 +40,9 @@ const DeviceStatus = () => {
   
   return (
     <>
+    <Helmet>
+            <title>DeviceStatus</title>
+          </Helmet>
       <Header />
       <BottomNavbar text="Device Status" />
       <div className="device-status-container">

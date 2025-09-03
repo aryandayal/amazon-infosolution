@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './addeditvehicles.css';
@@ -63,6 +64,9 @@ const AddEditVehicles = () => {
 
   return (
     <>
+    <Helmet>
+            <title>AddEditVehicles</title>
+          </Helmet>
     <Header />
     <BottomNavbar text="Add/Edit Vechicles" />
     

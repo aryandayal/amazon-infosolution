@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './imeimapwithvehicles.css';
@@ -38,6 +39,9 @@ const ImeiMapVehicle = () => {
 
   return (
     <>
+    <Helmet>
+            <title>imeimapwithvehicles</title>
+          </Helmet>
     <Header />
     <BottomNavbar text="IMEI Map With Vechicles"/>
     <div className="imei-map-vehicle-container">

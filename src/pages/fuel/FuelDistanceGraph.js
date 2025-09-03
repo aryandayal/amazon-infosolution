@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../components/Header';
 import BottomNavbar from '../../components/BottomNavbar';
 import './fueldistancegraph.css';
@@ -179,6 +180,9 @@ const FuelDistanceGraph = () => {
   
   return (
     <>
+    <Helmet>
+                <title>FuelDistanceGraph</title>
+              </Helmet>
     <Header />
     <BottomNavbar text="Fuel Distance Graph" />
     <div className="fuel-distance-graph-container">

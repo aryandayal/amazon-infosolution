@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './monthwisekmssummary.css';
@@ -142,6 +143,9 @@ const MonthWiseKmsSummary = () => {
 
   return (
     <>
+    <Helmet>
+                <title>MonthWiseKmsSummary</title>
+              </Helmet>
       <Header />
       <BottomNavbar text="MonthWiseKmsSummary" />
       

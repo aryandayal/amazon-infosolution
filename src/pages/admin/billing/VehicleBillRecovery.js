@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './vehiclebillrecovery.css';
@@ -57,6 +58,9 @@ const VehicleBillRecovery = () => {
 
   return (
     <>
+    <Helmet>
+            <title>VehicleBillRecovery</title>
+          </Helmet>
         <Header />
         <BottomNavbar />
     <div className="vehicle-recovery-container">

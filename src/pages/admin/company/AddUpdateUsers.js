@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './addupdateuser.css';
@@ -128,6 +129,9 @@ const AddUpdateUser = () => {
 
   return (
     <>
+    <Helmet>
+            <title>AddUpdateUser</title>
+          </Helmet>
         <Header />
         <BottomNavbar text="Add/Update Users"/>
     

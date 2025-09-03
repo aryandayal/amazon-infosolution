@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../components/Header';
 import BottomNavbar from '../../components/BottomNavbar';
 import './routedeviation.css';
@@ -143,6 +144,9 @@ const RouteDeviation = () => {
   
   return (
     <>
+    <Helmet>
+            <title>RouteDeviation</title>
+          </Helmet>
       <Header />
       <BottomNavbar text="Route Deviation" />
       <div className="route-deviation-container">

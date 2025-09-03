@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import './addnewdevicevehicle.css';
 
@@ -33,6 +34,9 @@ const AddNewDeviceVehicle = () => {
 
   return (
     <>
+    <Helmet>
+            <title>AddNewDeviceVehicle</title>
+          </Helmet>
     <Header />
     <div className="add-new-device-vehicle-container">
       <div className="header-section">

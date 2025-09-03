@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './tripsummarylocation.css';
@@ -46,6 +47,9 @@ const TripSummaryLocation = () => {
 
   return (
     <>
+    <Helmet>
+                <title>TripSummaryLocation</title>
+              </Helmet>
       <Header />
       <BottomNavbar text="TripSummaryLocation" />
       

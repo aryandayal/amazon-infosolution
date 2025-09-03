@@ -98,7 +98,7 @@ const ManageGroups = () => {
   return (
     <>
      <Helmet>
-            <title></title>
+            <title>ManageGroups</title>
           </Helmet>
     <Header />
     <BottomNavbar text="Manage Groups" />

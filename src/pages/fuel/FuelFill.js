@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../components/Header';
 import './fuelfill.css';
 
@@ -82,6 +83,9 @@ const FuelFill = () => {
 
   return (
     <>
+    <Helmet>
+                <title>FuelFill</title>
+              </Helmet>
     <Header />
     <div className="fuel-fill-container-full">
       <div className="fuel-fill-header-full">

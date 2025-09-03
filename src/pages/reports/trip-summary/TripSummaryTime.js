@@ -1,7 +1,5 @@
-// 
-
-
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './tripsummarytime.css';
@@ -49,6 +47,9 @@ const TripSummaryTime = () => {
 
   return (
     <>
+    <Helmet>
+                <title>TripSummaryTime</title>
+              </Helmet>
       <Header />
       <BottomNavbar text="TripSummaryTime" />
       

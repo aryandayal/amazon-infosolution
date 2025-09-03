@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './historytracking.css';
@@ -148,6 +149,9 @@ const TrackingHistory = () => {
   
   return (
     <>
+    <Helmet>
+                <title>HistoryTracking</title>
+              </Helmet>
     <Header />
     <BottomNavbar text="Tracking History" />
     <div className="tracking-history-container">

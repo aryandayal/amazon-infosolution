@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './userroles.css';
@@ -90,6 +91,9 @@ const UserRoles = () => {
 
   return (
     <>
+    <Helmet>
+            <title>UserRoles</title>
+          </Helmet>
     <Header />
     <BottomNavbar text="User Roles"/>
     

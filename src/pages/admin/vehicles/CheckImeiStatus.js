@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../../components/Header';
 import './checkimeistatus.css';
 import L from 'leaflet';
@@ -70,6 +71,9 @@ const CheckImeiStatus = () => {
 
   return (
     <>
+    <Helmet>
+            <title>CheckImeiStatus</title>
+          </Helmet>
     <Header />
     <div className="check-imei-status-container">
       <div className="form-section">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './routemapper.css';
@@ -152,6 +153,9 @@ const RouteMapper = () => {
   
   return (
     <>
+    <Helmet>
+                <title>RouteMapper</title>
+              </Helmet>
     <Header />
     <BottomNavbar text="Route Mapper" />
     <div className="route-mapper-container">

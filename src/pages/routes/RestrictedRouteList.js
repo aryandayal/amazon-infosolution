@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../components/Header';
 import BottomNavbar from '../../components/BottomNavbar';
 import './restrictedroutelist.css';
@@ -133,6 +134,9 @@ const RestrictedRouteList = () => {
   
   return (
     <>
+    <Helmet>
+            <title>RestrictedRouteList</title>
+          </Helmet>
       <Header />
       <BottomNavbar text="Restricted Route List" />
       <div className="restricted-route-list-container">

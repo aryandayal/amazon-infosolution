@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from "react-helmet";
 import Header from "../../components/Header";
 import BottomNavbar from "../../components/BottomNavbar";
 import './fueltimegraph.css';
@@ -57,6 +58,9 @@ const FuelTimeGraph = () => {
 
   return (
     <>
+    <Helmet>
+                <title>FuelTimeGraph</title>
+              </Helmet>
     <Header />
     <BottomNavbar text="fuel time graph" />
     <div className="fuel-graph-container">

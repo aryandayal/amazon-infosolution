@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './tripsummarysite.css';
@@ -278,6 +279,9 @@ const TripSummarySite = () => {
 
   return (
     <>
+    <Helmet>
+                <title>TripSummarySite</title>
+              </Helmet>
     <Header />
     <BottomNavbar text="TripSummarySite" />
     

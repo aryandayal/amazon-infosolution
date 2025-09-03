@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from "react-helmet";
 import Header from '../../components/Header';
 import BottomNavbar from '../../components/BottomNavbar';
 import './routelist.css';
@@ -133,6 +134,9 @@ const RouteList = () => {
   
   return (
     <>
+    <Helmet>
+            <title>RouteList</title>
+          </Helmet>
       <Header />
       <BottomNavbar text="Route List" />
       <div className="route-list-container">

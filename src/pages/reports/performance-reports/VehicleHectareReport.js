@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '../../../components/Header';
 import BottomNavbar from '../../../components/BottomNavbar';
 import './vehiclehectarereport.css';
@@ -162,6 +163,9 @@ const VehicleHectareReport = () => {
 
   return (
     <>
+    <Helmet>
+                <title>VehicleHectareReport</title>
+              </Helmet>
       <Header />
       <BottomNavbar text="VehicleHectareReport" />
       
