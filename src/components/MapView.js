@@ -11,8 +11,8 @@ function MapView() {
   const [realTimeData, setRealTimeData] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   
-  // Server configuration - replace with your actual server IP and port
-  const SERVER_URL = 'iot.auraani.com:5025'; // e.g., 'http://192.168.1.100:4000'
+  // Server configuration - replace with your actual server IP and port if not localhost
+  const SERVER_URL = 'http://localhost:4000';
   
   // Use a ref to store the socket instance
   const socketRef = useRef(null);
@@ -46,10 +46,12 @@ function MapView() {
 
   // Initialize WebSocket connection
   useEffect(() => {
-    // Create socket instance
+    // Create socket instance with polling fallback
     socketRef.current = io(SERVER_URL, {
-      transports: ['websocket'],
-      jsonp: false
+      // Removed transports: ['websocket'] to allow polling fallback
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000
     });
     
     const socket = socketRef.current;
@@ -65,14 +67,14 @@ function MapView() {
     });
     
     socket.on('connect_error', (error) => {
-      console.error('Connection error:', error);
-      setConnectionStatus('error');
+      console.error('Connection error:', error.message);
+      setConnectionStatus('error: ' + error.message);
     });
     
     // Listen for GPS updates
     socket.on('gps_update', (data) => {
       try {
-        // Validate the received data
+        console.log('Received gps_update:', data); // Log received data
         if (data && typeof data.lat === 'number' && typeof data.lng === 'number') {
           setRealTimeData(data);
         } else {
