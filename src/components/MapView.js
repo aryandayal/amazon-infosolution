@@ -103,12 +103,6 @@ function MapView() {
     }
   }, [realTimeData]);
 
-  const openStreetView = () => {
-    const [lat, lng] = cursorPosition;
-    const streetViewUrl = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}`;
-    window.open(streetViewUrl, '_blank');
-  };
-
   function MapEvents() {
     const map = useMap();
     mapRef.current = map; // Store map reference
@@ -141,12 +135,6 @@ function MapView() {
             onClick={() => setMapType('satellite')}
           >
             Satellite
-          </button>
-          <button 
-            className="street-view-btn"
-            onClick={openStreetView}
-          >
-            Street View
           </button>
         </div>
         
