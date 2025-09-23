@@ -75,6 +75,12 @@
   font-size: 14px;
 }
 
+/* Superman icon styling */
+.superman-icon {
+  background: transparent;
+  border: none;
+}
+
 /* Marker rotation */
 .leaflet-marker-icon {
   transition: transform 0.3s ease-out;

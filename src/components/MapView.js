@@ -22,11 +22,17 @@ function MapView() {
   const mapRef = useRef(null);
   const prevRealTimeDataRef = useRef(null);
 
-  const customIcon = new L.Icon({
-    iconUrl: 'https://i.ibb.co/CKqHrByL/Pngtree-red-car-top-view-icon-6587097-removebg-preview.png',
-    iconSize: [60, 60],
-    iconAnchor: [36, 32],
-    popupAnchor: [0, -32],
+  // Create a custom SVG icon for Superman
+  const supermanIcon = L.divIcon({
+    html: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" style="transform-origin: center;">
+        <path fill="#e53935" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
+        <path fill="#1e88e5" d="M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
+      </svg>
+    `,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18], // Center of the icon
+    className: 'superman-icon',
   });
 
   const position1 = [25.621209, 85.170179];
@@ -239,7 +245,7 @@ function MapView() {
             heading={realTimeData.heading || 0}
             path={realTimeData.path}
             duration={realTimeData.duration}
-            icon={customIcon}
+            icon={supermanIcon}
           >
             <Popup>
               <div className="popup-content">
@@ -260,7 +266,7 @@ function MapView() {
         
         {/* Only show this marker if there's no real-time data */}
         {!realTimeData && (
-          <Marker position={position1} icon={customIcon}>
+          <Marker position={position1} icon={supermanIcon}>
             <Popup>
               <div className="popup-content">
                 <h3>Initial Location</h3>
