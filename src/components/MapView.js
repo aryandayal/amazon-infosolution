@@ -1,6 +1,6 @@
 // MapView.js
 import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, ScaleControl, ZoomControl, useMap, useMapEvents, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup, ScaleControl, useMap, useMapEvents, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import io from 'socket.io-client';
 import RotatedMovingMarker from './RotatedMovingMarker';
@@ -24,9 +24,7 @@ function MapView() {
   const [realTimeData, setRealTimeData] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const [pathHistory, setPathHistory] = useState([]);
-  const [animatedPath, setAnimatedPath] = useState([]);
   const [zoomLevel, setZoomLevel] = useState(15);
-  const pathAnimationRef = useRef(null);
   
   const SERVER_URL = 'http://localhost:4000';
   const socketRef = useRef(null);
@@ -128,40 +126,6 @@ function MapView() {
     }
   }, [realTimeData]);
 
-  useEffect(() => {
-    if (pathHistory.length > 1) {
-      if (pathAnimationRef.current) {
-        cancelAnimationFrame(pathAnimationRef.current);
-      }
-
-      const startTime = Date.now();
-      const animationDuration = 3000;
-      const totalPoints = pathHistory.length;
-
-      const animatePath = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / animationDuration, 1);
-        
-        const easeProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
-        const pointsToShow = Math.floor(totalPoints * easeProgress);
-        
-        setAnimatedPath(pathHistory.slice(0, pointsToShow));
-
-        if (progress < 1) {
-          pathAnimationRef.current = requestAnimationFrame(animatePath);
-        }
-      };
-
-      pathAnimationRef.current = requestAnimationFrame(animatePath);
-    }
-
-    return () => {
-      if (pathAnimationRef.current) {
-        cancelAnimationFrame(pathAnimationRef.current);
-      }
-    };
-  }, [pathHistory]);
-
   function MapEvents() {
     const map = useMap();
     mapRef.current = map;
@@ -218,6 +182,7 @@ function MapView() {
         center={center} 
         zoom={zoomLevel}
         className="map-view"
+        attributionControl={false} // This removes the Leaflet attribution bar
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
           console.log('Map created successfully');
@@ -227,11 +192,9 @@ function MapView() {
           url={mapLayers[mapType]}
           maxZoom={20}
           subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
-          attribution='&copy; <a href="https://www.google.com/maps">Google Maps</a>'
         />
         
         <ScaleControl position="bottomleft" />
-        <ZoomControl position="topright" />
         
         {pathHistory.length > 1 && (
           <Polyline 
