@@ -14,6 +14,7 @@ function MapView() {
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const [pathHistory, setPathHistory] = useState([]);
   const [animatedPath, setAnimatedPath] = useState([]);
+  const [zoomLevel, setZoomLevel] = useState(15); // Initial zoom level
   const pathAnimationRef = useRef(null);
   
   const SERVER_URL = 'http://localhost:4000';
@@ -111,7 +112,9 @@ function MapView() {
     if (realTimeData && mapRef.current) {
       const map = mapRef.current;
       const newCenter = [realTimeData.lat, realTimeData.lng];
-      map.flyTo(newCenter, 15, { animate: true, duration: 1.0 });
+      // Use current zoom level instead of fixed zoom
+      const currentZoom = map.getZoom();
+      map.flyTo(newCenter, currentZoom, { animate: true, duration: 1.0 });
       setCenter(newCenter);
     }
   }, [realTimeData]);
@@ -164,6 +167,10 @@ function MapView() {
       },
       mousemove: (e) => {
         setCursorPosition([e.latlng.lat, e.latlng.lng]);
+      },
+      zoomend: (e) => {
+        // Update zoom level state when user zooms
+        setZoomLevel(e.target.getZoom());
       }
     });
     return null;
@@ -199,7 +206,7 @@ function MapView() {
       
       <MapContainer 
         center={center} 
-        zoom={12} 
+        zoom={zoomLevel} // Use zoomLevel state instead of fixed value
         className="map-view"
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
