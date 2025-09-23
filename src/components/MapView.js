@@ -6,6 +6,17 @@ import io from 'socket.io-client';
 import RotatedMovingMarker from './RotatedMovingMarker';
 import './mapview.css';
 
+// Import Leaflet CSS - this is important for proper rendering
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default markers in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
+
 function MapView() {
   const [mapType, setMapType] = useState('map');
   const [center, setCenter] = useState([25.621209, 85.170179]);
@@ -14,7 +25,7 @@ function MapView() {
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const [pathHistory, setPathHistory] = useState([]);
   const [animatedPath, setAnimatedPath] = useState([]);
-  const [zoomLevel, setZoomLevel] = useState(15); // Initial zoom level
+  const [zoomLevel, setZoomLevel] = useState(15);
   const pathAnimationRef = useRef(null);
   
   const SERVER_URL = 'http://localhost:4000';
@@ -22,28 +33,12 @@ function MapView() {
   const mapRef = useRef(null);
   const prevRealTimeDataRef = useRef(null);
 
-  // Create a custom SVG icon for Superman with a simpler design
+  // Create a simpler Superman icon using HTML/CSS
   const supermanIcon = L.divIcon({
-    html: `
-      <div style="
-        width: 36px; 
-        height: 36px; 
-        background-color: #e53935; 
-        border-radius: 50%; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        border: 2px solid #ffffff;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      ">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="transform-origin: center;">
-          <text x="12" y="18" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Arial">S</text>
-        </svg>
-      </div>
-    `,
+    className: 'superman-marker',
+    html: '<div class="superman-icon-inner">S</div>',
     iconSize: [36, 36],
-    iconAnchor: [18, 18], // Center of the icon
-    className: 'superman-icon',
+    iconAnchor: [18, 18],
   });
 
   const mapLayers = {
@@ -127,14 +122,12 @@ function MapView() {
     if (realTimeData && mapRef.current) {
       const map = mapRef.current;
       const newCenter = [realTimeData.lat, realTimeData.lng];
-      // Use current zoom level instead of fixed zoom
       const currentZoom = map.getZoom();
       map.flyTo(newCenter, currentZoom, { animate: true, duration: 1.0 });
       setCenter(newCenter);
     }
   }, [realTimeData]);
 
-  // Animate path drawing
   useEffect(() => {
     if (pathHistory.length > 1) {
       if (pathAnimationRef.current) {
@@ -142,14 +135,13 @@ function MapView() {
       }
 
       const startTime = Date.now();
-      const animationDuration = 3000; // Increased duration for smoother animation
+      const animationDuration = 3000;
       const totalPoints = pathHistory.length;
 
       const animatePath = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / animationDuration, 1);
         
-        // Use smooth easing function
         const easeProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
         const pointsToShow = Math.floor(totalPoints * easeProgress);
         
@@ -184,14 +176,12 @@ function MapView() {
         setCursorPosition([e.latlng.lat, e.latlng.lng]);
       },
       zoomend: (e) => {
-        // Update zoom level state when user zooms
         setZoomLevel(e.target.getZoom());
       }
     });
     return null;
   }
 
-  // Get the latest position from path history (head of the polyline)
   const latestPosition = pathHistory.length > 0 
     ? pathHistory[pathHistory.length - 1] 
     : center;
@@ -226,10 +216,11 @@ function MapView() {
       
       <MapContainer 
         center={center} 
-        zoom={zoomLevel} // Use zoomLevel state instead of fixed value
+        zoom={zoomLevel}
         className="map-view"
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
+          console.log('Map created successfully');
         }}
       >
         <TileLayer
@@ -242,7 +233,6 @@ function MapView() {
         <ScaleControl position="bottomleft" />
         <ZoomControl position="topright" />
         
-        {/* Path history - now plain line */}
         {pathHistory.length > 1 && (
           <Polyline 
             positions={pathHistory} 
@@ -252,7 +242,6 @@ function MapView() {
           />
         )}
         
-        {/* Superman icon at the head of the polyline */}
         {pathHistory.length > 0 && (
           <RotatedMovingMarker
             position={latestPosition}
