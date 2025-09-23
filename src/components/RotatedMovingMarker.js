@@ -10,31 +10,40 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
   const rotationRef = useRef(0);
   const initialPositionRef = useRef(position);
 
-  // Effect for creating the marker and setting up popup
   useEffect(() => {
-    if (!map) return;
-
-    // Create the marker if it doesn't exist
-    if (!markerRef.current) {
-      markerRef.current = L.marker(initialPositionRef.current, {
-        icon: icon,
-        ...props
-      }).addTo(map);
-      
-      // Log for debugging
-      console.log('Marker created at position:', initialPositionRef.current);
+    if (!map) {
+      console.error('Map not available');
+      return;
     }
 
-    // Handle popup content
-    if (children) {
-      const popupContent = document.createElement('div');
-      popupContent.innerHTML = children.props.children;
-      markerRef.current.bindPopup(popupContent);
+    try {
+      // Create the marker if it doesn't exist
+      if (!markerRef.current) {
+        markerRef.current = L.marker(initialPositionRef.current, {
+          icon: icon,
+          ...props
+        }).addTo(map);
+        
+        console.log('Marker created at position:', initialPositionRef.current);
+      }
+
+      // Handle popup content
+      if (children) {
+        const popupContent = document.createElement('div');
+        popupContent.innerHTML = children.props.children;
+        markerRef.current.bindPopup(popupContent);
+      }
+    } catch (error) {
+      console.error('Error creating marker:', error);
     }
 
     return () => {
       if (markerRef.current) {
-        map.removeLayer(markerRef.current);
+        try {
+          map.removeLayer(markerRef.current);
+        } catch (error) {
+          console.error('Error removing marker:', error);
+        }
       }
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -42,69 +51,77 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
     };
   }, [map, icon, children, props]);
 
-  // Effect for updating position and rotation
   useEffect(() => {
-    if (!markerRef.current) return;
-
-    // Cancel any ongoing animation
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
+    if (!markerRef.current) {
+      console.error('Marker not available');
+      return;
     }
 
-    if (path && path.length > 1 && duration) {
-      // Animate movement along path
-      const startTime = Date.now();
-      const startPosition = L.latLng(path[0]);
-      const endPosition = L.latLng(path[1]);
-      const startRotation = rotationRef.current;
-      const endRotation = heading;
-      const rotationDiff = endRotation - startRotation;
+    try {
+      // Cancel any ongoing animation
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
 
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+      if (path && path.length > 1 && duration) {
+        // Animate movement along path
+        const startTime = Date.now();
+        const startPosition = L.latLng(path[0]);
+        const endPosition = L.latLng(path[1]);
+        const startRotation = rotationRef.current;
+        const endRotation = heading;
+        const rotationDiff = endRotation - startRotation;
 
-        // Smoother easing function (quadratic ease-in-out)
-        const easeProgress = progress < 0.5 
-          ? 2 * progress * progress 
-          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
 
-        // Interpolate position
-        const lat = startPosition.lat + (endPosition.lat - startPosition.lat) * easeProgress;
-        const lng = startPosition.lng + (endPosition.lng - startPosition.lng) * easeProgress;
-        markerRef.current.setLatLng([lat, lng]);
+          // Smoother easing function
+          const easeProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
-        // Interpolate rotation
-        const currentRotation = startRotation + rotationDiff * easeProgress;
-        rotationRef.current = currentRotation;
-        updateMarkerRotation(currentRotation);
+          // Interpolate position
+          const lat = startPosition.lat + (endPosition.lat - startPosition.lat) * easeProgress;
+          const lng = startPosition.lng + (endPosition.lng - startPosition.lng) * easeProgress;
+          markerRef.current.setLatLng([lat, lng]);
 
-        if (progress < 1) {
-          animationRef.current = requestAnimationFrame(animate);
-        }
-      };
+          // Interpolate rotation
+          const currentRotation = startRotation + rotationDiff * easeProgress;
+          rotationRef.current = currentRotation;
+          updateMarkerRotation(currentRotation);
 
-      animationRef.current = requestAnimationFrame(animate);
-    } else {
-      // Direct position update
-      markerRef.current.setLatLng(position);
-      rotationRef.current = heading;
-      updateMarkerRotation(heading);
+          if (progress < 1) {
+            animationRef.current = requestAnimationFrame(animate);
+          }
+        };
+
+        animationRef.current = requestAnimationFrame(animate);
+      } else {
+        // Direct position update
+        markerRef.current.setLatLng(position);
+        rotationRef.current = heading;
+        updateMarkerRotation(heading);
+      }
+    } catch (error) {
+      console.error('Error updating marker:', error);
     }
   }, [position, heading, path, duration]);
 
   const updateMarkerRotation = (angle) => {
     if (markerRef.current && markerRef.current._icon) {
-      // Add smooth transition for rotation
-      markerRef.current._icon.style.transition = 'transform 0.3s ease-out';
-      
-      // Apply rotation to the entire icon container
-      const iconContainer = markerRef.current._icon;
-      iconContainer.style.transform = `rotate(${angle}deg)`;
-      iconContainer.style.transformOrigin = 'center center';
-      
-      // Log for debugging
-      console.log('Marker rotated to:', angle);
+      try {
+        // Find the SVG element inside the icon
+        const svgElement = markerRef.current._icon.querySelector('svg');
+        if (svgElement) {
+          svgElement.style.transition = 'transform 0.3s ease-out';
+          svgElement.style.transform = `rotate(${angle}deg)`;
+          svgElement.style.transformOrigin = 'center center';
+          console.log('Car rotated to:', angle);
+        }
+      } catch (error) {
+        console.error('Error rotating marker:', error);
+      }
     }
   };
 

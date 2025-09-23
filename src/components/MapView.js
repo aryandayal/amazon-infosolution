@@ -31,12 +31,21 @@ function MapView() {
   const mapRef = useRef(null);
   const prevRealTimeDataRef = useRef(null);
 
-  // Create a simpler Superman icon using HTML/CSS
-  const supermanIcon = L.divIcon({
-    className: 'superman-marker',
-    html: '<div class="superman-icon-inner">S</div>',
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
+  // Create a car icon using SVG
+  const carIcon = L.divIcon({
+    className: 'car-marker',
+    html: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="40" height="16" style="transform-origin: center;">
+        <path d="M20,35 L25,25 L75,25 L80,35 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+        <rect x="25" y="15" width="50" height="10" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+        <path d="M25,15 L30,5 L70,5 L75,15 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+        <circle cx="35" cy="35" r="5" fill="#2c3e50"/>
+        <circle cx="65" cy="35" r="5" fill="#2c3e50"/>
+        <rect x="40" y="10" width="20" height="5" fill="#e74c3c"/>
+      </svg>
+    `,
+    iconSize: [40, 40],
+    iconAnchor: [20, 20], // Center of the icon
   });
 
   const mapLayers = {
@@ -182,7 +191,7 @@ function MapView() {
         center={center} 
         zoom={zoomLevel}
         className="map-view"
-        attributionControl={false} // This removes the Leaflet attribution bar
+        attributionControl={false}
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
           console.log('Map created successfully');
@@ -211,7 +220,7 @@ function MapView() {
             heading={realTimeData ? realTimeData.heading || 0 : 0}
             path={realTimeData ? realTimeData.path : [[latestPosition, latestPosition]]}
             duration={realTimeData ? realTimeData.duration : 1000}
-            icon={supermanIcon}
+            icon={carIcon}
           >
             <Popup>
               <div className="popup-content">
