@@ -1,3 +1,4 @@
+// RotatedMovingMarker.js
 import { useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -36,7 +37,7 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [map, icon, children, props]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [map, icon, children, props]);
 
   // Effect for updating position and rotation
   useEffect(() => {
@@ -60,8 +61,10 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
 
-        // Easing function for smooth animation
-        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        // Smoother easing function (quadratic ease-in-out)
+        const easeProgress = progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
         // Interpolate position
         const lat = startPosition.lat + (endPosition.lat - startPosition.lat) * easeProgress;
@@ -89,6 +92,8 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
 
   const updateMarkerRotation = (angle) => {
     if (markerRef.current && markerRef.current._icon) {
+      // Add smooth transition for rotation
+      markerRef.current._icon.style.transition = 'transform 0.3s ease-out';
       markerRef.current._icon.style.transform = `rotate(${angle}deg)`;
       markerRef.current._icon.style.transformOrigin = 'center center';
     }

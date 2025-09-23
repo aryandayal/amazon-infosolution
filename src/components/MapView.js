@@ -1,3 +1,4 @@
+// MapView.js
 import React, { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, ScaleControl, ZoomControl, useMap, useMapEvents, Polyline } from 'react-leaflet';
 import L from 'leaflet';
@@ -123,13 +124,16 @@ function MapView() {
       }
 
       const startTime = Date.now();
-      const animationDuration = 2000; // 2 seconds
+      const animationDuration = 3000; // Increased duration for smoother animation
       const totalPoints = pathHistory.length;
 
       const animatePath = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / animationDuration, 1);
-        const pointsToShow = Math.floor(totalPoints * progress);
+        
+        // Use smooth easing function
+        const easeProgress = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+        const pointsToShow = Math.floor(totalPoints * easeProgress);
         
         setAnimatedPath(pathHistory.slice(0, pointsToShow));
 
@@ -197,6 +201,9 @@ function MapView() {
         center={center} 
         zoom={12} 
         className="map-view"
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance;
+        }}
       >
         <TileLayer
           url={mapLayers[mapType]}
@@ -208,14 +215,13 @@ function MapView() {
         <ScaleControl position="bottomleft" />
         <ZoomControl position="topright" />
         
-        {/* Animated path history */}
-        {animatedPath.length > 1 && (
+        {/* Path history - now plain line */}
+        {pathHistory.length > 1 && (
           <Polyline 
-            positions={animatedPath} 
+            positions={pathHistory} 
             color="red" 
             weight={4} 
             opacity={0.8}
-            className="animated-path"
           />
         )}
         
@@ -245,16 +251,18 @@ function MapView() {
           </RotatedMovingMarker>
         )}
         
-        {/* Existing marker */}
-        <Marker position={position1} icon={customIcon}>
-          <Popup>
-            <div className="popup-content">
-              <h3>Location 1</h3>
-              <p>Lat: {position1[0]}</p>
-              <p>Lng: {position1[1]}</p>
-            </div>
-          </Popup>
-        </Marker>
+        {/* Only show this marker if there's no real-time data */}
+        {!realTimeData && (
+          <Marker position={position1} icon={customIcon}>
+            <Popup>
+              <div className="popup-content">
+                <h3>Initial Location</h3>
+                <p>Lat: {position1[0]}</p>
+                <p>Lng: {position1[1]}</p>
+              </div>
+            </Popup>
+          </Marker>
+        )}
         
         <MapEvents />
       </MapContainer>

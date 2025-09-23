@@ -1,3 +1,4 @@
+/* mapview.css */
 /* Map container */
 .map-container {
   position: relative;
@@ -74,20 +75,8 @@
   font-size: 14px;
 }
 
-/* Animated path */
-.animated-path {
-  stroke-dasharray: 10, 20;
-  animation: dash 1s linear infinite;
-}
-
-@keyframes dash {
-  to {
-    stroke-dashoffset: -30;
-  }
-}
-
 /* Marker rotation */
 .leaflet-marker-icon {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease-out;
   transform-origin: center center;
 }
