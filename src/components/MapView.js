@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, ScaleControl, ZoomControl, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, ScaleControl, ZoomControl, useMap, useMapEvents, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import io from 'socket.io-client';
+import RotatedMovingMarker from './RotatedMovingMarker';
 import './mapview.css';
 
 function MapView() {
@@ -10,13 +11,14 @@ function MapView() {
   const [cursorPosition, setCursorPosition] = useState([25.621209, 85.170179]);
   const [realTimeData, setRealTimeData] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [pathHistory, setPathHistory] = useState([]);
+  const [animatedPath, setAnimatedPath] = useState([]);
+  const pathAnimationRef = useRef(null);
   
-  // Server configuration - replace with your actual server IP and port if not localhost
   const SERVER_URL = 'http://localhost:4000';
-  
-  // Use a ref to store the socket instance
   const socketRef = useRef(null);
   const mapRef = useRef(null);
+  const prevRealTimeDataRef = useRef(null);
 
   const customIcon = new L.Icon({
     iconUrl: 'https://i.ibb.co/CKqHrByL/Pngtree-red-car-top-view-icon-6587097-removebg-preview.png',
@@ -32,7 +34,6 @@ function MapView() {
     satellite: "http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}"
   };
 
-  // Format date and time
   const formatDateTime = (dateStr, timeStr) => {
     if (!dateStr || !timeStr) return 'N/A';
     const day = dateStr.substring(0,2);
@@ -44,11 +45,8 @@ function MapView() {
     return `${day}/${month}/${year} ${hour}:${min}:${sec} UTC`;
   };
 
-  // Initialize WebSocket connection
   useEffect(() => {
-    // Create socket instance with polling fallback
     socketRef.current = io(SERVER_URL, {
-      // Removed transports: ['websocket'] to allow polling fallback
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000
@@ -71,12 +69,28 @@ function MapView() {
       setConnectionStatus('error: ' + error.message);
     });
     
-    // Listen for GPS updates
     socket.on('gps_update', (data) => {
       try {
-        console.log('Received gps_update:', data); // Log received data
+        console.log('Received gps_update:', data);
         if (data && typeof data.lat === 'number' && typeof data.lng === 'number') {
-          setRealTimeData(data);
+          let duration = 2000;
+          let path = [[data.lat, data.lng]];
+          
+          if (prevRealTimeDataRef.current) {
+            const prevTime = new Date(prevRealTimeDataRef.current.timestamp || Date.now());
+            const currentTime = new Date(data.timestamp || Date.now());
+            duration = Math.max(1000, currentTime - prevTime);
+            path = [[prevRealTimeDataRef.current.lat, prevRealTimeDataRef.current.lng], [data.lat, data.lng]];
+            
+            setPathHistory(prev => [...prev, [data.lat, data.lng]]);
+          }
+          
+          setRealTimeData({
+            ...data,
+            path: path,
+            duration: duration
+          });
+          prevRealTimeDataRef.current = data;
         } else {
           console.error('Invalid GPS data format:', data);
         }
@@ -85,7 +99,6 @@ function MapView() {
       }
     });
     
-    // Cleanup on unmount
     return () => {
       if (socket) {
         socket.disconnect();
@@ -93,7 +106,6 @@ function MapView() {
     };
   }, [SERVER_URL]);
 
-  // Update map center when realTimeData changes
   useEffect(() => {
     if (realTimeData && mapRef.current) {
       const map = mapRef.current;
@@ -103,9 +115,42 @@ function MapView() {
     }
   }, [realTimeData]);
 
+  // Animate path drawing
+  useEffect(() => {
+    if (pathHistory.length > 1) {
+      if (pathAnimationRef.current) {
+        cancelAnimationFrame(pathAnimationRef.current);
+      }
+
+      const startTime = Date.now();
+      const animationDuration = 2000; // 2 seconds
+      const totalPoints = pathHistory.length;
+
+      const animatePath = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / animationDuration, 1);
+        const pointsToShow = Math.floor(totalPoints * progress);
+        
+        setAnimatedPath(pathHistory.slice(0, pointsToShow));
+
+        if (progress < 1) {
+          pathAnimationRef.current = requestAnimationFrame(animatePath);
+        }
+      };
+
+      pathAnimationRef.current = requestAnimationFrame(animatePath);
+    }
+
+    return () => {
+      if (pathAnimationRef.current) {
+        cancelAnimationFrame(pathAnimationRef.current);
+      }
+    };
+  }, [pathHistory]);
+
   function MapEvents() {
     const map = useMap();
-    mapRef.current = map; // Store map reference
+    mapRef.current = map;
 
     useMapEvents({
       moveend: (e) => {
@@ -163,9 +208,26 @@ function MapView() {
         <ScaleControl position="bottomleft" />
         <ZoomControl position="topright" />
         
-        {/* Real-time GPS marker */}
+        {/* Animated path history */}
+        {animatedPath.length > 1 && (
+          <Polyline 
+            positions={animatedPath} 
+            color="red" 
+            weight={4} 
+            opacity={0.8}
+            className="animated-path"
+          />
+        )}
+        
+        {/* Real-time GPS marker with rotation and movement */}
         {realTimeData && (
-          <Marker position={[realTimeData.lat, realTimeData.lng]} icon={customIcon}>
+          <RotatedMovingMarker
+            position={[realTimeData.lat, realTimeData.lng]}
+            heading={realTimeData.heading || 0}
+            path={realTimeData.path}
+            duration={realTimeData.duration}
+            icon={customIcon}
+          >
             <Popup>
               <div className="popup-content">
                 <h3>Real-time GPS: {realTimeData.vehicleNo || 'Unknown Vehicle'}</h3>
@@ -180,7 +242,7 @@ function MapView() {
                 <p>Status: {connectionStatus}</p>
               </div>
             </Popup>
-          </Marker>
+          </RotatedMovingMarker>
         )}
         
         {/* Existing marker */}
