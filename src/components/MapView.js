@@ -35,8 +35,6 @@ function MapView() {
     className: 'superman-icon',
   });
 
-  const position1 = [25.621209, 85.170179];
-
   const mapLayers = {
     map: "http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}",
     satellite: "http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}"
@@ -182,6 +180,11 @@ function MapView() {
     return null;
   }
 
+  // Get the latest position from path history (head of the polyline)
+  const latestPosition = pathHistory.length > 0 
+    ? pathHistory[pathHistory.length - 1] 
+    : center;
+
   return (
     <div className="map-container">
       <div className="map-controls-bottom">
@@ -238,43 +241,31 @@ function MapView() {
           />
         )}
         
-        {/* Real-time GPS marker with rotation and movement */}
-        {realTimeData && (
+        {/* Superman icon at the head of the polyline */}
+        {pathHistory.length > 0 && (
           <RotatedMovingMarker
-            position={[realTimeData.lat, realTimeData.lng]}
-            heading={realTimeData.heading || 0}
-            path={realTimeData.path}
-            duration={realTimeData.duration}
+            position={latestPosition}
+            heading={realTimeData ? realTimeData.heading || 0 : 0}
+            path={realTimeData ? realTimeData.path : [[latestPosition, latestPosition]]}
+            duration={realTimeData ? realTimeData.duration : 1000}
             icon={supermanIcon}
           >
             <Popup>
               <div className="popup-content">
-                <h3>Real-time GPS: {realTimeData.vehicleNo || 'Unknown Vehicle'}</h3>
-                <p>IMEI: {realTimeData.imei || 'N/A'}</p>
-                <p>Lat: {realTimeData.lat.toFixed(6)}</p>
-                <p>Lng: {realTimeData.lng.toFixed(6)}</p>
-                <p>Speed: {realTimeData.speed ? `${realTimeData.speed} km/h` : 'N/A'}</p>
-                <p>Heading: {realTimeData.heading ? `${realTimeData.heading}°` : 'N/A'}</p>
-                <p>Altitude: {realTimeData.altitude ? `${realTimeData.altitude} m` : 'N/A'}</p>
-                <p>Satellites: {realTimeData.satellites || 'N/A'}</p>
-                <p>Timestamp: {formatDateTime(realTimeData.date, realTimeData.time)}</p>
+                <h3>Vehicle Location</h3>
+                <p>Lat: {latestPosition[0].toFixed(6)}</p>
+                <p>Lng: {latestPosition[1].toFixed(6)}</p>
+                {realTimeData && (
+                  <>
+                    <p>Speed: {realTimeData.speed ? `${realTimeData.speed} km/h` : 'N/A'}</p>
+                    <p>Heading: {realTimeData.heading ? `${realTimeData.heading}°` : 'N/A'}</p>
+                    <p>Timestamp: {formatDateTime(realTimeData.date, realTimeData.time)}</p>
+                  </>
+                )}
                 <p>Status: {connectionStatus}</p>
               </div>
             </Popup>
           </RotatedMovingMarker>
-        )}
-        
-        {/* Only show this marker if there's no real-time data */}
-        {!realTimeData && (
-          <Marker position={position1} icon={supermanIcon}>
-            <Popup>
-              <div className="popup-content">
-                <h3>Initial Location</h3>
-                <p>Lat: {position1[0]}</p>
-                <p>Lng: {position1[1]}</p>
-              </div>
-            </Popup>
-          </Marker>
         )}
         
         <MapEvents />
