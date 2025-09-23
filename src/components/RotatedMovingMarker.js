@@ -20,6 +20,9 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
         icon: icon,
         ...props
       }).addTo(map);
+      
+      // Log for debugging
+      console.log('Marker created at position:', initialPositionRef.current);
     }
 
     // Handle popup content
@@ -94,8 +97,14 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
     if (markerRef.current && markerRef.current._icon) {
       // Add smooth transition for rotation
       markerRef.current._icon.style.transition = 'transform 0.3s ease-out';
-      markerRef.current._icon.style.transform = `rotate(${angle}deg)`;
-      markerRef.current._icon.style.transformOrigin = 'center center';
+      
+      // Apply rotation to the entire icon container
+      const iconContainer = markerRef.current._icon;
+      iconContainer.style.transform = `rotate(${angle}deg)`;
+      iconContainer.style.transformOrigin = 'center center';
+      
+      // Log for debugging
+      console.log('Marker rotated to:', angle);
     }
   };
 

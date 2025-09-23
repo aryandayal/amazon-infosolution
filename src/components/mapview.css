@@ -77,12 +77,20 @@
 
 /* Superman icon styling */
 .superman-icon {
-  background: transparent;
-  border: none;
+  background: transparent !important;
+  border: none !important;
+  z-index: 1000 !important;
+}
+
+/* Ensure the icon is visible and properly positioned */
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+  z-index: 1000 !important;
 }
 
 /* Marker rotation */
 .leaflet-marker-icon {
-  transition: transform 0.3s ease-out;
-  transform-origin: center center;
+  transition: transform 0.3s ease-out !important;
+  transform-origin: center center !important;
 }

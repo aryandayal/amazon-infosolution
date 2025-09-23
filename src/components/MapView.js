@@ -22,13 +22,24 @@ function MapView() {
   const mapRef = useRef(null);
   const prevRealTimeDataRef = useRef(null);
 
-  // Create a custom SVG icon for Superman
+  // Create a custom SVG icon for Superman with a simpler design
   const supermanIcon = L.divIcon({
     html: `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" style="transform-origin: center;">
-        <path fill="#e53935" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
-        <path fill="#1e88e5" d="M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
-      </svg>
+      <div style="
+        width: 36px; 
+        height: 36px; 
+        background-color: #e53935; 
+        border-radius: 50%; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border: 2px solid #ffffff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      ">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="transform-origin: center;">
+          <text x="12" y="18" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold" font-family="Arial">S</text>
+        </svg>
+      </div>
     `,
     iconSize: [36, 36],
     iconAnchor: [18, 18], // Center of the icon
