@@ -21,15 +21,14 @@ function MapView() {
   const [mapType, setMapType] = useState('map');
   const [center, setCenter] = useState([25.621209, 85.170179]);
   const [cursorPosition, setCursorPosition] = useState([25.621209, 85.170179]);
-  const [realTimeData, setRealTimeData] = useState(null);
+  const [devices, setDevices] = useState({}); // imei -> { realTimeData, pathHistory }
+  const [trackedImei, setTrackedImei] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
-  const [pathHistory, setPathHistory] = useState([]);
   const [zoomLevel, setZoomLevel] = useState(15);
   
   const SERVER_URL = 'http://localhost:4000';
   const socketRef = useRef(null);
   const mapRef = useRef(null);
-  const prevRealTimeDataRef = useRef(null);
 
   // Create a car icon using SVG
   const carIcon = L.divIcon({
@@ -64,6 +63,18 @@ function MapView() {
     return `${day}/${month}/${year} ${hour}:${min}:${sec} UTC`;
   };
 
+  const parseTimestamp = (dateStr, timeStr) => {
+    if (!dateStr || !timeStr) return Date.now();
+    const day = dateStr.substring(0,2);
+    const month = dateStr.substring(2,4);
+    const year = dateStr.substring(4,8);
+    const hour = timeStr.substring(0,2);
+    const min = timeStr.substring(2,4);
+    const sec = timeStr.substring(4,6);
+    const dateObj = new Date(`${year}-${month}-${day}T${hour}:${min}:${sec}Z`);
+    return dateObj.getTime();
+  };
+
   useEffect(() => {
     socketRef.current = io(SERVER_URL, {
       reconnection: true,
@@ -91,25 +102,42 @@ function MapView() {
     socket.on('gps_update', (data) => {
       try {
         console.log('Received gps_update:', data);
-        if (data && typeof data.lat === 'number' && typeof data.lng === 'number') {
-          let duration = 2000;
-          let path = [[data.lat, data.lng]];
-          
-          if (prevRealTimeDataRef.current) {
-            const prevTime = new Date(prevRealTimeDataRef.current.timestamp || Date.now());
-            const currentTime = new Date(data.timestamp || Date.now());
-            duration = Math.max(1000, currentTime - prevTime);
-            path = [[prevRealTimeDataRef.current.lat, prevRealTimeDataRef.current.lng], [data.lat, data.lng]];
-            
-            setPathHistory(prev => [...prev, [data.lat, data.lng]]);
-          }
-          
-          setRealTimeData({
-            ...data,
-            path: path,
-            duration: duration
+        if (data && data.imei && typeof data.latitude === 'number' && typeof data.longitude === 'number') {
+          setDevices(prevDevices => {
+            const prevDevice = prevDevices[data.imei] || { pathHistory: [], realTimeData: null };
+            const prevRealTimeData = prevDevice.realTimeData;
+
+            const timestamp = parseTimestamp(data.date, data.time);
+            const prevTimestamp = prevRealTimeData ? prevRealTimeData.timestamp : null;
+
+            let duration = 2000;
+            let path = [[data.latitude, data.longitude]];
+            let newPathHistory = [...prevDevice.pathHistory];
+
+            if (prevRealTimeData && prevTimestamp) {
+              duration = Math.max(1000, timestamp - prevTimestamp);
+              path = [[prevRealTimeData.latitude, prevRealTimeData.longitude], [data.latitude, data.longitude]];
+              
+              newPathHistory.push([data.latitude, data.longitude]);
+            } else {
+              newPathHistory = [[data.latitude, data.longitude]];
+            }
+
+            const updatedDevice = {
+              realTimeData: { ...data, timestamp, path, duration },
+              pathHistory: newPathHistory
+            };
+
+            // If this is the first device, set it as tracked
+            if (Object.keys(prevDevices).length === 0 && !trackedImei) {
+              setTrackedImei(data.imei);
+            }
+
+            return {
+              ...prevDevices,
+              [data.imei]: updatedDevice
+            };
           });
-          prevRealTimeDataRef.current = data;
         } else {
           console.error('Invalid GPS data format:', data);
         }
@@ -123,17 +151,18 @@ function MapView() {
         socket.disconnect();
       }
     };
-  }, [SERVER_URL]);
+  }, [SERVER_URL, trackedImei]);
 
   useEffect(() => {
-    if (realTimeData && mapRef.current) {
+    if (mapRef.current && trackedImei && devices[trackedImei] && devices[trackedImei].realTimeData) {
       const map = mapRef.current;
-      const newCenter = [realTimeData.lat, realTimeData.lng];
+      const realTimeData = devices[trackedImei].realTimeData;
+      const newCenter = [realTimeData.latitude, realTimeData.longitude];
       const currentZoom = map.getZoom();
       map.flyTo(newCenter, currentZoom, { animate: true, duration: 1.0 });
       setCenter(newCenter);
     }
-  }, [realTimeData]);
+  }, [devices, trackedImei]);
 
   function MapEvents() {
     const map = useMap();
@@ -154,10 +183,6 @@ function MapView() {
     });
     return null;
   }
-
-  const latestPosition = pathHistory.length > 0 
-    ? pathHistory[pathHistory.length - 1] 
-    : center;
 
   return (
     <div className="map-container">
@@ -205,40 +230,58 @@ function MapView() {
         
         <ScaleControl position="bottomleft" />
         
-        {pathHistory.length > 1 && (
-          <Polyline 
-            positions={pathHistory} 
-            color="red" 
-            weight={4} 
-            opacity={0.8}
-          />
-        )}
-        
-        {pathHistory.length > 0 && (
-          <RotatedMovingMarker
-            position={latestPosition}
-            heading={realTimeData ? realTimeData.heading || 0 : 0}
-            path={realTimeData ? realTimeData.path : [[latestPosition, latestPosition]]}
-            duration={realTimeData ? realTimeData.duration : 1000}
-            icon={carIcon}
-          >
-            <Popup>
-              <div className="popup-content">
-                <h3>Vehicle Location</h3>
-                <p>Lat: {latestPosition[0].toFixed(6)}</p>
-                <p>Lng: {latestPosition[1].toFixed(6)}</p>
-                {realTimeData && (
-                  <>
-                    <p>Speed: {realTimeData.speed ? `${realTimeData.speed} km/h` : 'N/A'}</p>
-                    <p>Heading: {realTimeData.heading ? `${realTimeData.heading}°` : 'N/A'}</p>
-                    <p>Timestamp: {formatDateTime(realTimeData.date, realTimeData.time)}</p>
-                  </>
-                )}
-                <p>Status: {connectionStatus}</p>
-              </div>
-            </Popup>
-          </RotatedMovingMarker>
-        )}
+        {Object.entries(devices).map(([imei, device]) => {
+          const pathHistory = device.pathHistory;
+          const realTimeData = device.realTimeData;
+          const latestPosition = pathHistory.length > 0 ? pathHistory[pathHistory.length - 1] : center;
+
+          return (
+            <React.Fragment key={imei}>
+              {pathHistory.length > 1 && (
+                <Polyline 
+                  positions={pathHistory} 
+                  color="red" 
+                  weight={4} 
+                  opacity={0.8}
+                />
+              )}
+              
+              {pathHistory.length > 0 && (
+                <RotatedMovingMarker
+                  position={latestPosition}
+                  heading={realTimeData ? realTimeData.heading || 0 : 0}
+                  path={realTimeData ? realTimeData.path : [[latestPosition, latestPosition]]}
+                  duration={realTimeData ? realTimeData.duration : 1000}
+                  icon={carIcon}
+                  onClick={() => {
+                    setTrackedImei(imei);
+                    if (mapRef.current && realTimeData) {
+                      const newCenter = [realTimeData.latitude, realTimeData.longitude];
+                      mapRef.current.flyTo(newCenter, zoomLevel, { animate: true, duration: 1.0 });
+                      setCenter(newCenter);
+                    }
+                  }}
+                >
+                  <Popup>
+                    <div className="popup-content">
+                      <h3>Vehicle Location (IMEI: {imei})</h3>
+                      <p>Lat: {latestPosition[0].toFixed(6)}</p>
+                      <p>Lng: {latestPosition[1].toFixed(6)}</p>
+                      {realTimeData && (
+                        <>
+                          <p>Speed: {realTimeData.speed ? `${realTimeData.speed} km/h` : 'N/A'}</p>
+                          <p>Heading: {realTimeData.heading ? `${realTimeData.heading}°` : 'N/A'}</p>
+                          <p>Timestamp: {formatDateTime(realTimeData.date, realTimeData.time)}</p>
+                        </>
+                      )}
+                      <p>Status: {connectionStatus}</p>
+                    </div>
+                  </Popup>
+                </RotatedMovingMarker>
+              )}
+            </React.Fragment>
+          );
+        })}
         
         <MapEvents />
       </MapContainer>
