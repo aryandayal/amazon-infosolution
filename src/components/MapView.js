@@ -17,6 +17,23 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+// Custom car icon using SVG
+const carIcon = L.divIcon({
+  className: 'car-marker',
+  html: `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="40" height="16" style="transform-origin: center;">
+      <path d="M20,35 L25,25 L75,25 L80,35 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+      <rect x="25" y="15" width="50" height="10" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+      <path d="M25,15 L30,5 L70,5 L75,15 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+      <circle cx="35" cy="35" r="5" fill="#2c3e50"/>
+      <circle cx="65" cy="35" r="5" fill="#2c3e50"/>
+      <rect x="40" y="10" width="20" height="5" fill="#e74c3c"/>
+    </svg>
+  `,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20], // Center of the icon
+});
+
 function MapView() {
   const [mapType, setMapType] = useState('map');
   const [center, setCenter] = useState([25.621209, 85.170179]);
@@ -24,27 +41,11 @@ function MapView() {
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const [devicesData, setDevicesData] = useState({}); // Stores data keyed by IMEI
   const [zoomLevel, setZoomLevel] = useState(15);
+  const [selectedDevice, setSelectedDevice] = useState(null); // For navigating to specific device
 
   const SERVER_URL = 'http://localhost:4000';
   const socketRef = useRef(null);
   const mapRef = useRef(null);
-
-  // Create a car icon using SVG
-  const carIcon = L.divIcon({
-    className: 'car-marker',
-    html: `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="40" height="16" style="transform-origin: center;">
-        <path d="M20,35 L25,25 L75,25 L80,35 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
-        <rect x="25" y="15" width="50" height="10" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
-        <path d="M25,15 L30,5 L70,5 L75,15 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
-        <circle cx="35" cy="35" r="5" fill="#2c3e50"/>
-        <circle cx="65" cy="35" r="5" fill="#2c3e50"/>
-        <rect x="40" y="10" width="20" height="5" fill="#e74c3c"/>
-      </svg>
-    `,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20], // Center of the icon
-  });
 
   // Map tile URLs for different map types
   const mapLayers = {
@@ -91,18 +92,41 @@ function MapView() {
 
     socket.on('gps_update', (data) => {
       try {
-        if (data && data.imei && typeof data.lat === 'number' && typeof data.lng === 'number') {
-          setDevicesData(prev => {
-            const prevDevice = prev[data.imei] || {};
-            const newPathHistory = prevDevice.pathHistory ? [...prevDevice.pathHistory, [data.lat, data.lng]] : [[data.lat, data.lng]];
-            return {
-              ...prev,
-              [data.imei]: {
-                ...data,
-                pathHistory: newPathHistory
+        if (data && data.imei && typeof data.latitude === 'string' && typeof data.longitude === 'string') {
+          // Parse latitude and longitude from strings to numbers
+          const lat = parseFloat(data.latitude);
+          const lng = parseFloat(data.longitude);
+          const heading = parseFloat(data.heading) || 0;
+          const speed = parseFloat(data.speed) || 0;
+
+          if (!isNaN(lat) && !isNaN(lng)) {
+            setDevicesData(prev => {
+              const prevDevice = prev[data.imei] || {};
+              const newPathHistory = prevDevice.pathHistory 
+                ? [...prevDevice.pathHistory, [lat, lng]] 
+                : [[lat, lng]];
+              
+              // Limit path history to last 100 points to prevent memory issues
+              if (newPathHistory.length > 100) {
+                newPathHistory.shift();
               }
-            };
-          });
+
+              return {
+                ...prev,
+                [data.imei]: {
+                  ...data,
+                  lat,
+                  lng,
+                  heading,
+                  speed,
+                  pathHistory: newPathHistory,
+                  lastUpdate: Date.now()
+                }
+              };
+            });
+          } else {
+            console.error('Invalid latitude/longitude values:', data);
+          }
         } else {
           console.error('Invalid GPS data format or missing IMEI:', data);
         }
@@ -116,18 +140,31 @@ function MapView() {
     };
   }, [SERVER_URL]);
 
-  // Center map on the first device's latest position if available
+  // Center map on selected device or first device if none selected
   useEffect(() => {
-    const imeis = Object.keys(devicesData);
-    if (imeis.length > 0) {
-      const firstDevice = devicesData[imeis[0]];
-      if (firstDevice && firstDevice.lat && firstDevice.lng && mapRef.current) {
-        const map = mapRef.current;
-        map.flyTo([firstDevice.lat, firstDevice.lng], zoomLevel, { animate: true, duration: 1.0 });
-        setCenter([firstDevice.lat, firstDevice.lng]);
+    if (mapRef.current) {
+      const map = mapRef.current;
+      let targetLatLng = center;
+
+      if (selectedDevice && devicesData[selectedDevice]) {
+        const device = devicesData[selectedDevice];
+        targetLatLng = [device.lat, device.lng];
+      } else {
+        const imeis = Object.keys(devicesData);
+        if (imeis.length > 0) {
+          const firstDevice = devicesData[imeis[0]];
+          targetLatLng = [firstDevice.lat, firstDevice.lng];
+        }
+      }
+
+      // Only flyTo and update center if the target is different from current center
+      const isDifferent = targetLatLng[0] !== center[0] || targetLatLng[1] !== center[1];
+      if (isDifferent) {
+        map.flyTo(targetLatLng, zoomLevel, { animate: true, duration: 1.0 });
+        setCenter(targetLatLng);
       }
     }
-  }, [devicesData, zoomLevel]);
+  }, [devicesData, selectedDevice, zoomLevel, center]); // Added 'center' to fix ESLint warning
 
   // Map events to update cursor position, zoom level and center
   function MapEvents() {
@@ -175,6 +212,19 @@ function MapView() {
         <div className="cursor-info">
           <div>Lat: {cursorPosition[0].toFixed(6)}</div>
           <div>Lng: {cursorPosition[1].toFixed(6)}</div>
+        </div>
+
+        {/* Device selector for navigation */}
+        <div className="device-selector">
+          <select 
+            value={selectedDevice || ''} 
+            onChange={(e) => setSelectedDevice(e.target.value || null)}
+          >
+            <option value="">Select Device</option>
+            {Object.keys(devicesData).map(imei => (
+              <option key={imei} value={imei}>{imei}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -233,3 +283,5 @@ function MapView() {
 }
 
 export default MapView;
+
+
