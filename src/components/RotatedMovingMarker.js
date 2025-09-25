@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-const RotatedMovingMarker = ({ position, heading, path, duration, icon, children, onClick, ...props }) => {
+const RotatedMovingMarker = ({ position, heading, path, duration, icon, children, ...props }) => {
   const map = useMap();
   const markerRef = useRef(null);
   const animationRef = useRef(null);
@@ -25,11 +25,6 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
         }).addTo(map);
         
         console.log('Marker created at position:', initialPositionRef.current);
-
-        // Add click handler if provided
-        if (onClick) {
-          markerRef.current.on('click', onClick);
-        }
       }
 
       // Handle popup content
@@ -45,9 +40,6 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
     return () => {
       if (markerRef.current) {
         try {
-          if (onClick) {
-            markerRef.current.off('click', onClick);
-          }
           map.removeLayer(markerRef.current);
         } catch (error) {
           console.error('Error removing marker:', error);
@@ -57,7 +49,7 @@ const RotatedMovingMarker = ({ position, heading, path, duration, icon, children
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [map, icon, children, props, onClick]);
+  }, [map, icon, children, props]);
 
   useEffect(() => {
     if (!markerRef.current) {
