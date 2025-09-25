@@ -1,12 +1,15 @@
 // MapView.js
 import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Popup, ScaleControl, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup, ScaleControl, useMap, useMapEvents, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import io from 'socket.io-client';
 import RotatedMovingMarker from './RotatedMovingMarker';
 import './mapview.css';
+
+// Import Leaflet CSS for proper rendering
 import 'leaflet/dist/leaflet.css';
 
+// Fix for default markers in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -14,88 +17,219 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-// Car Icon (SVG)
-const carIcon = L.divIcon({
-  className: 'car-marker',
-  html: `<svg ...your SVG here...></svg>`,
-  iconSize: [40, 40],
-  iconAnchor: [20, 20]
-});
-
-const mapLayers = { ... }
-
 function MapView() {
-  // Device data by IMEI
-  const [deviceData, setDeviceData] = useState({});
   const [mapType, setMapType] = useState('map');
   const [center, setCenter] = useState([25.621209, 85.170179]);
+  const [cursorPosition, setCursorPosition] = useState([25.621209, 85.170179]);
+  const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [devicesData, setDevicesData] = useState({}); // Stores data keyed by IMEI
   const [zoomLevel, setZoomLevel] = useState(15);
+
   const SERVER_URL = 'http://localhost:4000';
+  const socketRef = useRef(null);
+  const mapRef = useRef(null);
 
-  // Socket setup
+  // Create a car icon using SVG
+  const carIcon = L.divIcon({
+    className: 'car-marker',
+    html: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="40" height="16" style="transform-origin: center;">
+        <path d="M20,35 L25,25 L75,25 L80,35 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+        <rect x="25" y="15" width="50" height="10" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+        <path d="M25,15 L30,5 L70,5 L75,15 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+        <circle cx="35" cy="35" r="5" fill="#2c3e50"/>
+        <circle cx="65" cy="35" r="5" fill="#2c3e50"/>
+        <rect x="40" y="10" width="20" height="5" fill="#e74c3c"/>
+      </svg>
+    `,
+    iconSize: [40, 40],
+    iconAnchor: [20, 20], // Center of the icon
+  });
+
+  // Map tile URLs for different map types
+  const mapLayers = {
+    map: "http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}",
+    satellite: "http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}"
+  };
+
+  // Format date and time strings into readable format
+  const formatDateTime = (dateStr, timeStr) => {
+    if (!dateStr || !timeStr) return 'N/A';
+    const day = dateStr.substring(0,2);
+    const month = dateStr.substring(2,4);
+    const year = dateStr.substring(4,8);
+    const hour = timeStr.substring(0,2);
+    const min = timeStr.substring(2,4);
+    const sec = timeStr.substring(4,6);
+    return `${day}/${month}/${year} ${hour}:${min}:${sec} UTC`;
+  };
+
+  // Socket.io connection and data handling
   useEffect(() => {
-    const socket = io(SERVER_URL);
-    socket.on('gps_update', (data) => {
-      if (!data.imei) return;
-      setDeviceData(prev => {
-        const prevDevice = prev[data.imei] || {};
-        const newPath = prevDevice.pathHistory ? [...prevDevice.pathHistory, [data.lat, data.lng]] : [[data.lat, data.lng]];
-        return {
-          ...prev,
-          [data.imei]: {
-            ...data,
-            pathHistory: newPath,
-            lastPosition: [data.lat, data.lng]
-          }
-        };
-      });
+    socketRef.current = io(SERVER_URL, {
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000
     });
-    return () => socket.disconnect();
-  }, []);
 
-  // Recenter map on first device
+    const socket = socketRef.current;
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+      setConnectionStatus('connected');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+      setConnectionStatus('disconnected');
+    });
+
+    socket.on('connect_error', (error) => {
+      console.error('Connection error:', error.message);
+      setConnectionStatus('error: ' + error.message);
+    });
+
+    socket.on('gps_update', (data) => {
+      try {
+        if (data && data.imei && typeof data.lat === 'number' && typeof data.lng === 'number') {
+          setDevicesData(prev => {
+            const prevDevice = prev[data.imei] || {};
+            const newPathHistory = prevDevice.pathHistory ? [...prevDevice.pathHistory, [data.lat, data.lng]] : [[data.lat, data.lng]];
+            return {
+              ...prev,
+              [data.imei]: {
+                ...data,
+                pathHistory: newPathHistory
+              }
+            };
+          });
+        } else {
+          console.error('Invalid GPS data format or missing IMEI:', data);
+        }
+      } catch (error) {
+        console.error('Error processing GPS data:', error);
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [SERVER_URL]);
+
+  // Center map on the first device's latest position if available
   useEffect(() => {
-    const imeis = Object.keys(deviceData);
+    const imeis = Object.keys(devicesData);
     if (imeis.length > 0) {
-      setCenter(deviceData[imeis[0]].lastPosition || center);
+      const firstDevice = devicesData[imeis[0]];
+      if (firstDevice && firstDevice.lat && firstDevice.lng && mapRef.current) {
+        const map = mapRef.current;
+        map.flyTo([firstDevice.lat, firstDevice.lng], zoomLevel, { animate: true, duration: 1.0 });
+        setCenter([firstDevice.lat, firstDevice.lng]);
+      }
     }
-  }, [deviceData]);
+  }, [devicesData, zoomLevel]);
+
+  // Map events to update cursor position, zoom level and center
+  function MapEvents() {
+    const map = useMap();
+    mapRef.current = map;
+
+    useMapEvents({
+      moveend: (e) => {
+        const center = e.target.getCenter();
+        setCenter([center.lat, center.lng]);
+        setCursorPosition([center.lat, center.lng]);
+      },
+      mousemove: (e) => {
+        setCursorPosition([e.latlng.lat, e.latlng.lng]);
+      },
+      zoomend: (e) => {
+        setZoomLevel(e.target.getZoom());
+      }
+    });
+    return null;
+  }
 
   return (
     <div className="map-container">
-      {/* ...controls... */}
-      <MapContainer center={center} zoom={zoomLevel} className="map-view" attributionControl={false}>
-        <TileLayer url={mapLayers[mapType]} ... />
+      <div className="map-controls-bottom">
+        <div className="map-type-controls">
+          <button
+            className={`map-type-btn ${mapType === 'map' ? 'active' : ''}`}
+            onClick={() => setMapType('map')}
+          >
+            Map
+          </button>
+          <button
+            className={`map-type-btn ${mapType === 'satellite' ? 'active' : ''}`}
+            onClick={() => setMapType('satellite')}
+          >
+            Satellite
+          </button>
+        </div>
+
+        <div className="connection-status">
+          Status: {connectionStatus}
+        </div>
+
+        <div className="cursor-info">
+          <div>Lat: {cursorPosition[0].toFixed(6)}</div>
+          <div>Lng: {cursorPosition[1].toFixed(6)}</div>
+        </div>
+      </div>
+
+      <MapContainer
+        center={center}
+        zoom={zoomLevel}
+        className="map-view"
+        attributionControl={false}
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance;
+          console.log('Map created successfully');
+        }}
+      >
+        <TileLayer
+          url={mapLayers[mapType]}
+          maxZoom={20}
+          subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+        />
+
         <ScaleControl position="bottomleft" />
-        {Object.entries(deviceData).map(([imei, dev]) => (
+
+        {Object.entries(devicesData).map(([imei, device]) => (
           <React.Fragment key={imei}>
-            {dev.pathHistory && dev.pathHistory.length > 1 && (
-              <Polyline positions={dev.pathHistory} color="red" weight={4} opacity={0.8} />
+            {device.pathHistory && device.pathHistory.length > 1 && (
+              <Polyline positions={device.pathHistory} color="red" weight={4} opacity={0.8} />
             )}
-            {dev.lastPosition && (
+
+            {device.pathHistory && device.pathHistory.length > 0 && (
               <RotatedMovingMarker
-                position={dev.lastPosition}
-                heading={dev.heading || 0}
-                path={dev.pathHistory.slice(-2)}
+                position={device.pathHistory[device.pathHistory.length - 1]}
+                heading={device.heading || 0}
+                path={device.pathHistory.slice(-2)}
                 duration={1000}
                 icon={carIcon}
               >
                 <Popup>
                   <div className="popup-content">
-                    <h3>Vehicle {imei}</h3>
-                    <p>Lat: {dev.lastPosition[0].toFixed(6)}</p>
-                    <p>Lng: {dev.lastPosition[1].toFixed(6)}</p>
-                    <p>Speed: {dev.speed || 'N/A'} km/h</p>
-                    <p>Heading: {dev.heading || 'N/A'}°</p>
-                    {/* Add more info as needed */}
+                    <h3>Vehicle: {imei}</h3>
+                    <p>Lat: {device.lat.toFixed(6)}</p>
+                    <p>Lng: {device.lng.toFixed(6)}</p>
+                    <p>Speed: {device.speed ? `${device.speed} km/h` : 'N/A'}</p>
+                    <p>Heading: {device.heading ? `${device.heading}°` : 'N/A'}</p>
+                    <p>Timestamp: {formatDateTime(device.date, device.time)}</p>
+                    <p>Status: {connectionStatus}</p>
                   </div>
                 </Popup>
               </RotatedMovingMarker>
             )}
           </React.Fragment>
         ))}
+
+        <MapEvents />
       </MapContainer>
     </div>
   );
 }
+
 export default MapView;
