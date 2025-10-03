@@ -1,14 +1,194 @@
-/* mapview.css */
-/* Map container */
-.map-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main container for MapView with scrolling */
+.map-view-container {
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content */
+.main-content {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 32px); /* Subtract the height of VehicleIndicator */
+  background-color: #f5f7fa;
+}
+
+/* Sidebar styles */
+.sidebar {
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  transition: width 0.1s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Resizable Divider Styles */
+.resizable-divider {
+  width: 8px;
+  height: 100%;
+  background-color: #f5f7fa;
+  cursor: col-resize;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.resizable-divider:hover {
+  background-color: #e9ecef;
+}
+
+.resizable-divider.dragging {
+  background-color: #dee2e6;
+}
+
+.divider-line {
+  width: 1px;
+  height: 100%;
+  background-color: #ced4da;
+}
+
+.divider-handle {
+  position: absolute;
+  width: 24px;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.handle-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  background-color: #6c757d;
+  border-radius: 50%;
+}
+
+/* Table container */
+.table-container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Table wrapper for horizontal scrolling */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* No devices message */
+.no-devices-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  height: 100%;
+}
+
+.no-devices-message p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Map container styles */
+.map-container {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #e9ecef;
+  transition: width 0.1s ease;
+}
+
+/* Map view */
 .map-view {
   width: 100%;
   height: 100%;
+}
+
+/* Controls at top */
+.map-controls-top {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.control-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #495057;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-size: 18px;
+}
+
+.control-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  color: #3498db;
+}
+
+.control-btn.active {
+  background-color: #3498db;
+  color: white;
 }
 
 /* Controls at bottom */
@@ -24,6 +204,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  border: 2px solid #3498db;
 }
 
 .map-type-controls {
@@ -75,16 +256,342 @@
   font-size: 14px;
 }
 
-/* Car marker styling */
-.car-marker {
+/* Custom balloon marker styling */
+.custom-balloon-marker {
   background: transparent !important;
   border: none !important;
-  z-index: 1000 !important;
 }
-
 
 /* Leaflet overrides */
 .leaflet-div-icon {
   background: transparent !important;
   border: none !important;
+}
+
+/* Vehicle table adjustments */
+.vehicle-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  min-width: 1200px; /* Set a minimum width to ensure horizontal scrolling */
+}
+
+.vehicle-table th,
+.vehicle-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.vehicle-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.vehicle-table tr {
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.vehicle-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Selected row styling */
+.vehicle-table tr.selected-row {
+  background-color: #e3f2fd;
+}
+
+.vehicle-table td {
+  color: #495057;
+  font-size: 12px;
+}
+
+/* Custom polyline styles for web-like appearance */
+.vehicle-path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.selected-path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Arrow marker styling */
+.arrow-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Map Features Panel Styles */
+.map-features-panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.panel-header h3 {
+  margin: 0;
+  color: #495057;
+  font-size: 16px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6c757d;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #495057;
+  background-color: #e9ecef;
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.feature-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.feature-option:hover {
+  background-color: #f8f9fa;
+}
+
+.feature-option label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #495057;
+}
+
+.feature-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.feature-info {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border-left: 4px solid #3498db;
+}
+
+.feature-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #6c757d;
+  line-height: 1.5;
+}
+
+/* Cluster marker styling */
+.cluster-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Mobile view styles */
+@media (max-width: 768px) {
+  /* Hide the resizable divider on mobile */
+  .resizable-divider {
+    display: none;
+  }
+  
+  /* Stack sidebar and map vertically */
+  .main-content {
+    flex-direction: column;
+  }
+  
+  /* Make sidebar full width and set height */
+  .sidebar {
+    width: 100% !important;
+    height: 60%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Make map container full width and set height */
+  .map-container {
+    width: 100% !important;
+    height: 40%;
+  }
+  
+  /* Adjust VehicleIndicator for mobile */
+  .vehicle-indicator {
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .indicator-item {
+    padding: 6px 10px;
+    font-size: 12px;
+    flex: 1 1 calc(50% - 4px);
+    min-width: 100px;
+  }
+  
+  /* Adjust VehicleTable for mobile */
+  .vehicle-table {
+    font-size: 11px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 6px 8px;
+  }
+  
+  .vehicle-table th {
+    font-size: 10px;
+  }
+  
+  /* Adjust map controls for mobile */
+  .map-controls-bottom {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    transform: none;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .map-controls-top {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .control-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+  
+  /* Adjust Map Features Panel for mobile */
+  .map-features-panel {
+    width: 100%;
+  }
+  
+  .panel-content {
+    padding: 10px;
+  }
+  
+  .feature-option {
+    padding: 10px;
+  }
+  
+  .feature-option label {
+    font-size: 13px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  /* Further adjust indicator items */
+  .indicator-item {
+    flex: 1 1 100%;
+    min-width: 100px;
+  }
+  
+  /* Further adjust table */
+  .vehicle-table {
+    font-size: 10px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    padding: 4px 6px;
+  }
+  
+  .vehicle-table th {
+    font-size: 9px;
+  }
+  
+  /* Further adjust map controls */
+  .map-controls-bottom {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .map-type-btn {
+    width: 100%;
+  }
+  
+  /* Further adjust Map Features Panel */
+  .panel-header {
+    padding: 10px;
+  }
+  
+  .panel-header h3 {
+    font-size: 14px;
+  }
+  
+  .feature-option {
+    padding: 8px;
+  }
+  
+  .feature-option label {
+    font-size: 12px;
+  }
+  
+  .feature-info {
+    padding: 10px;
+  }
+  
+  .feature-info p {
+    font-size: 12px;
+  }
 }
