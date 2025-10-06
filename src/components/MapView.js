@@ -185,41 +185,73 @@ const VehicleIndicator = ({ devices }) => {
   );
 };
 
-// Create a larger balloon marker icon
-const createBalloonIcon = (color = '#3388ff') => {
+// Create a vehicle marker icon with direction
+const createVehicleIcon = (color = '#3388ff', heading = 0, isSelected = false) => {
+  // Convert heading to degrees for CSS rotation
+  const rotation = heading || 0;
+  const size = isSelected ? 48 : 40;
+  
   return L.divIcon({
-    className: 'custom-balloon-marker',
+    className: 'custom-vehicle-marker',
     html: `
       <div style="
-        width: 40px;
-        height: 40px;
-        background-color: ${color};
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        border: 2px solid #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: ${size}px;
+        height: ${size}px;
+        position: relative;
+        transform: rotate(${rotation}deg);
       ">
         <div style="
-          width: 16px;
-          height: 16px;
-          background-color: white;
+          width: ${size}px;
+          height: ${size}px;
+          background-color: ${color};
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          border: 2px solid #ffffff;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">
+          <div style="
+            width: ${size * 0.4}px;
+            height: ${size * 0.4}px;
+            background-color: white;
+            border-radius: 50%;
+            transform: rotate(45deg);
+          "></div>
+        </div>
+        ${isSelected ? `
+        <div style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: ${size * 0.6}px;
+          height: ${size * 0.6}px;
+          background-color: rgba(255,255,255,0.7);
           border-radius: 50%;
-          transform: rotate(45deg);
+          animation: pulse 2s infinite;
         "></div>
+        ` : ''}
       </div>
+      <style>
+        @keyframes pulse {
+          0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+          70% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+          100% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+        }
+      </style>
     `,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [size, size],
+    iconAnchor: [size/2, size],
+    popupAnchor: [0, -size]
   });
 };
 
-// Simple Vehicle Marker Component
-const VehicleMarker = ({ position, heading, color, children }) => {
+// Vehicle Marker Component with direction
+const VehicleMarker = ({ position, heading, color, isSelected, children }) => {
   return (
-    <Marker position={position} icon={createBalloonIcon(color)}>
+    <Marker position={position} icon={createVehicleIcon(color, heading, isSelected)}>
       {children}
     </Marker>
   );
@@ -451,13 +483,6 @@ const ResizableDivider = ({ onResize }) => {
       onMouseDown={handleMouseDown}
     >
       <div className="divider-line"></div>
-      <div className="divider-handle">
-        <div className="handle-dots">
-          <div className="dot"></div>
-          <div className="dot"></div>
-          <div className="dot"></div>
-        </div>
-      </div>
     </div>
   );
 };
@@ -475,6 +500,8 @@ function MapView() {
   const prevSelectedDeviceIdRef = useRef(null);
   const prevPositionRef = useRef(null);
   const positionUpdateTimeoutRef = useRef(null);
+  const lastUpdateTimeRef = useRef(0); // Track last update time to prevent rapid updates
+  const initialPositionSetRef = useRef(false); // Track if initial position has been set
 
   // New state variables for map features
   const [showMapFeaturesPanel, setShowMapFeaturesPanel] = useState(false);
@@ -526,6 +553,12 @@ function MapView() {
   const handleDeviceSelect = (imei) => {
     setSelectedDeviceId(imei);
     prevSelectedDeviceIdRef.current = imei;
+    initialPositionSetRef.current = false; // Reset initial position flag for new device
+    
+    // Clear any existing timeout
+    if (positionUpdateTimeoutRef.current) {
+      clearTimeout(positionUpdateTimeoutRef.current);
+    }
     
     // Center map on the selected device if available
     const device = devicesData[imei];
@@ -534,6 +567,8 @@ function MapView() {
       map.flyTo([device.lat, device.lng], zoomLevel, { animate: true, duration: 1.0 });
       setCenter([device.lat, device.lng]);
       prevPositionRef.current = [device.lat, device.lng];
+      lastUpdateTimeRef.current = Date.now();
+      initialPositionSetRef.current = true; // Mark initial position as set
     }
   };
 
@@ -687,38 +722,56 @@ function MapView() {
   const selectedDeviceLat = selectedDevice?.lat;
   const selectedDeviceLng = selectedDevice?.lng;
 
-  // Center map on the selected device when it updates, but avoid jumping
+  // Improved center map on the selected device with better tracking logic
   useEffect(() => {
     if (selectedDeviceId && selectedDeviceLat && selectedDeviceLng && !isUserInteracting) {
       const currentPosition = [selectedDeviceLat, selectedDeviceLng];
+      const now = Date.now();
       
       // Clear any existing timeout
       if (positionUpdateTimeoutRef.current) {
         clearTimeout(positionUpdateTimeoutRef.current);
       }
       
-      // Set a timeout to update the map position
-      positionUpdateTimeoutRef.current = setTimeout(() => {
-        // Check if this is a new device selection
-        if (prevSelectedDeviceIdRef.current !== selectedDeviceId) {
-          // New device selected - use flyTo with animation
-          const map = mapRef.current;
+      // Check if this is a new device selection
+      if (prevSelectedDeviceIdRef.current !== selectedDeviceId) {
+        // New device selected - use flyTo with animation
+        const map = mapRef.current;
+        if (map) {
           map.flyTo(currentPosition, zoomLevel, { animate: true, duration: 1.0 });
+          setCenter(currentPosition);
+          prevPositionRef.current = currentPosition;
           prevSelectedDeviceIdRef.current = selectedDeviceId;
-        } else {
-          // Same device - check if position has changed significantly
-          if (!prevPositionRef.current || 
-              Math.abs(prevPositionRef.current[0] - selectedDeviceLat) > 0.001 || 
-              Math.abs(prevPositionRef.current[1] - selectedDeviceLng) > 0.001) {
-            // Position changed significantly - use panTo without animation for smooth tracking
-            const map = mapRef.current;
-            map.panTo(currentPosition, { animate: false });
+          lastUpdateTimeRef.current = now;
+          initialPositionSetRef.current = true; // Mark initial position as set
+        }
+      } else if (initialPositionSetRef.current) {
+        // Only track if initial position has been set
+        // Same device - check if position has changed significantly and enough time has passed
+        const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
+        const minUpdateInterval = 2000; // Minimum 2 seconds between updates
+        
+        // Only update if enough time has passed and position changed significantly
+        if (timeSinceLastUpdate >= minUpdateInterval) {
+          const positionChanged = !prevPositionRef.current || 
+            Math.abs(prevPositionRef.current[0] - selectedDeviceLat) > 0.0005 || // Reduced threshold
+            Math.abs(prevPositionRef.current[1] - selectedDeviceLng) > 0.0005;
+          
+          if (positionChanged) {
+            // Use a shorter timeout for smoother tracking
+            positionUpdateTimeoutRef.current = setTimeout(() => {
+              const map = mapRef.current;
+              if (map) {
+                // Use panTo for smooth tracking without animation
+                map.panTo(currentPosition, { animate: false });
+                setCenter(currentPosition);
+                prevPositionRef.current = currentPosition;
+                lastUpdateTimeRef.current = Date.now();
+              }
+            }, 200); // Reduced debounce time
           }
         }
-        
-        setCenter(currentPosition);
-        prevPositionRef.current = currentPosition;
-      }, 500); // Debounce for 500ms to prevent jumping
+      }
     }
   }, [selectedDeviceId, selectedDeviceLat, selectedDeviceLng, zoomLevel, isUserInteracting]);
 
@@ -812,7 +865,7 @@ function MapView() {
             center={center}
             zoom={zoomLevel}
             className="map-view"
-            attributionControl={false}
+            attributionControl={false} 
             whenCreated={(mapInstance) => {
               mapRef.current = mapInstance;
               console.log('Map created successfully');
@@ -851,6 +904,7 @@ function MapView() {
                     position={[device.lat, device.lng]}
                     heading={device.heading || 0}
                     color={selectedDeviceId === imei ? "#4CAF50" : "#3388ff"} // Changed to green for selected
+                    isSelected={selectedDeviceId === imei}
                   >
                     <Tooltip>
                       {device.vehicle || imei} {/* Show vehicle number in tooltip */}

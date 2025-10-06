@@ -8,6 +8,8 @@
 html, body {
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 /* Main container for MapView with scrolling */
@@ -18,6 +20,8 @@ html, body {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
 /* Main content */
@@ -26,6 +30,8 @@ html, body {
   flex: 1;
   min-height: calc(100vh - 32px); /* Subtract the height of VehicleIndicator */
   background-color: #f5f7fa;
+  margin: 0; /* Remove any default margins */
+  padding: 0; /* Remove any default padding */
 }
 
 /* Sidebar styles */
@@ -39,11 +45,13 @@ html, body {
   display: flex;
   flex-direction: column;
   position: relative;
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
 }
 
 /* Resizable Divider Styles */
 .resizable-divider {
-  width: 8px;
+  width: 4px;
   height: 100%;
   background-color: #f5f7fa;
   cursor: col-resize;
@@ -53,6 +61,9 @@ html, body {
   justify-content: center;
   align-items: center;
   transition: background-color 0.2s ease;
+  flex-shrink: 0; /* Prevent the divider from shrinking */
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
 }
 
 .resizable-divider:hover {
@@ -70,30 +81,23 @@ html, body {
 }
 
 .divider-handle {
+  display: none; /* Hide the handle completely */
+}
+
+/* Optional: Show a subtle handle on hover */
+.resizable-divider:hover::after {
+  content: '';
   position: absolute;
-  width: 24px;
-  height: 40px;
-  background-color: #ffffff;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-.handle-dots {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.dot {
-  width: 3px;
-  height: 3px;
+  width: 2px;
+  height: 30px;
   background-color: #6c757d;
-  border-radius: 50%;
+  border-radius: 1px;
+  opacity: 0.5;
+}
+
+.resizable-divider.dragging::after {
+  background-color: #495057;
+  opacity: 0.8;
 }
 
 /* Table container */
@@ -102,6 +106,8 @@ html, body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
 }
 
 /* Table wrapper for horizontal scrolling */
@@ -109,6 +115,8 @@ html, body {
   overflow-x: auto;
   overflow-y: auto;
   flex: 1;
+  margin: 0;
+  padding: 0;
 }
 
 /* No devices message */
@@ -149,12 +157,16 @@ html, body {
   overflow: hidden;
   background-color: #e9ecef;
   transition: width 0.1s ease;
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
 }
 
 /* Map view */
 .map-view {
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Controls at top */
@@ -445,6 +457,152 @@ html, body {
   border: none !important;
 }
 
+/* Pegman Styles */
+.pegman-container {
+  position: absolute;
+  z-index: 1000;
+  cursor: grab;
+  transition: transform 0.2s ease;
+}
+
+.pegman-container.dragging {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.pegman-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #4285f4;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pegman-shadow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px 4px 0 0;
+}
+
+/* Street View Panel Styles */
+.street-view-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 800px;
+  height: 80%;
+  max-height: 600px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.street-view-panel.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.street-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 12px 12px 0 0;
+}
+
+.street-view-header h3 {
+  margin: 0;
+  color: #495057;
+  font-size: 18px;
+}
+
+.street-view-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #6c757d;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.street-view-header .close-btn:hover {
+  color: #495057;
+  background-color: #e9ecef;
+}
+
+.street-view-content {
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+.street-view-image {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.street-view-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.street-view-info {
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: white;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: white;
+  text-align: center;
+}
+
 /* Mobile view styles */
 @media (max-width: 768px) {
   /* Hide the resizable divider on mobile */
@@ -536,6 +694,36 @@ html, body {
   .feature-option label {
     font-size: 13px;
   }
+  
+  /* Adjust Street View Panel for mobile */
+  .street-view-panel {
+    width: 95%;
+    max-width: 95%;
+    max-height: 70%;
+  }
+  
+  .street-view-header {
+    padding: 10px;
+  }
+  
+  .street-view-header h3 {
+    font-size: 16px;
+  }
+  
+  .street-view-header .close-btn {
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+  }
+  
+  .street-view-content {
+    height: calc(100% - 50px);
+  }
+  
+  .street-view-info {
+    font-size: 11px;
+    padding: 8px;
+  }
 }
 
 /* Extra small mobile devices */
@@ -593,5 +781,35 @@ html, body {
   
   .feature-info p {
     font-size: 12px;
+  }
+  
+  /* Further adjust Street View Panel */
+  .street-view-panel {
+    width: 90%;
+    max-width: 90%;
+    max-height: 60%;
+  }
+  
+  .street-view-header {
+    padding: 8px;
+  }
+  
+  .street-view-header h3 {
+    font-size: 14px;
+  }
+  
+  .street-view-header .close-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+  }
+  
+  .street-view-content {
+    height: calc(100% - 40px);
+  }
+  
+  .street-view-info {
+    font-size: 10px;
+    padding: 6px;
   }
 }
